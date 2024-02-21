@@ -83,10 +83,6 @@ namespace RRScout.Controllers
             }
         }
 
-
-
-
-
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<string>> getPhoto(string eventCode, int teamNumber)
