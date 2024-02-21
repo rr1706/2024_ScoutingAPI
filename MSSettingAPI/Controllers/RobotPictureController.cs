@@ -58,8 +58,37 @@ namespace RRScout.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpDelete("{eventCode}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> DeletePhotos(string eventCode)
+        {
+            try
+            {
+
+                var pictures = await Context.RobotPhotos.Where(x => x.eventCode == eventCode).ToListAsync();
+
+                foreach (var picture in pictures)
+                {
+                    await fileStorageService.DeleteFile(picture.picture, eventCode);
+                    Context.Remove(picture);
+                }
+                await Context.SaveChangesAsync();
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+
+
+
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<string>> getPhoto(string eventCode, int teamNumber)
         {
             var picture = await Context.RobotPhotos.SingleOrDefaultAsync(x => x.teamNumber == teamNumber && x.eventCode == eventCode);
