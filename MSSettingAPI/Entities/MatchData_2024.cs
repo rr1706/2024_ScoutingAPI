@@ -39,6 +39,15 @@ namespace RRScout.Entities
         public string? autoCenter4 { set; get; }
         [MaxLength(5)]
         public string? autoCenter5 { set; get; }
+
+        public int? autoClose1Order { get; set; }
+        public int? autoClose2Order { get; set; }
+        public int? autoClose3Order { get; set; }
+        public int? autoCenter1Order { get; set; }
+        public int? autoCenter2Order { get; set; }
+        public int? autoCenter3Order { get; set; }
+        public int? autoCenter4Order { get; set; }
+        public int? autoCenter5Order { get; set; }
         public int? teleFeeds { set; get; }
     }
 }
