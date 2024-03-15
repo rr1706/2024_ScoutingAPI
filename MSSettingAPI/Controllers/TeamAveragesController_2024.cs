@@ -93,6 +93,7 @@ namespace RRScout.Controllers
             newAverage.teleAmpAvg += match.teleAmp;
             newAverage.teleSpeakerAvg += match.teleSpeaker;
             newAverage.teleTrapAvg += match.teleTrap;
+            newAverage.feedAvg += match.teleFeeds;
             if (match.climb == "Yes")
             {
                 newAverage.climbPercent += 1;
@@ -101,6 +102,36 @@ namespace RRScout.Controllers
             {
                 newAverage.climbAttempts += 1;
             }
+            if (CheckIfClose(match)){
+                newAverage.closeAutoNum += 1;
+
+                if (match.autoClose1 == "Make")
+                {
+                    newAverage.closeAutoAvg += 1;
+                }
+                if (match.autoClose2 == "Make")
+                {
+                    newAverage.closeAutoAvg += 1;
+                }
+                if (match.autoClose3 == "Make")
+                {
+                    newAverage.closeAutoAvg += 1;
+                }
+                if (match.autoPreload == "Make")
+                {
+                    newAverage.closeAutoAvg += 1;
+                }
+            }
+
+        }
+
+        private static Boolean CheckIfClose(MatchData_2024 match)
+        {
+            if (match.autoClose1Order > 0 && match.autoClose2Order > 0 && match.autoClose3Order > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         private static void CalculateAverages(TeamAverages_2024 newAverage)
@@ -110,6 +141,7 @@ namespace RRScout.Controllers
             newAverage.teleSpeakerAvg = newAverage.teleSpeakerAvg / newAverage.numMatches;
             newAverage.teleAmpAvg = newAverage.teleAmpAvg / newAverage.numMatches;
             newAverage.teleTrapAvg = newAverage.teleTrapAvg / newAverage.numMatches;
+            newAverage.feedAvg = newAverage.feedAvg / newAverage.numMatches;
 
             newAverage.autoTotalAvg = newAverage.autoSpeakerAvg + newAverage.autoAmpAvg;
             newAverage.teleTotalAvg = newAverage.teleSpeakerAvg + newAverage.teleAmpAvg;
@@ -117,6 +149,7 @@ namespace RRScout.Controllers
 
             newAverage.climbSuccessRate = newAverage.climbPercent;
             newAverage.climbPercent = (newAverage.climbPercent / newAverage.numMatches)*100;
+
 
             if (newAverage.climbAttempts > 0)
             {
@@ -126,8 +159,12 @@ namespace RRScout.Controllers
             {
                 newAverage.climbSuccessRate = 0;
             }
-            
 
+            if (newAverage.closeAutoNum > 0)
+            {
+                newAverage.closeAutoAvg = (newAverage.closeAutoAvg / newAverage.closeAutoNum);
+            }
+            
             newAverage.totalPoints =
                 (decimal)((newAverage.autoAmpAvg * 2) +
                 (newAverage.autoSpeakerAvg * 5) +

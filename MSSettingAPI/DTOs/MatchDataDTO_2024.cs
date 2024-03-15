@@ -23,6 +23,8 @@ namespace RRScout.DTOs
         [MaxLength(3)]
         public string? playedDefense { get; set; }
         public string? comment { get; set; }
+
+        public string? autoPreload { get;set; }
         public string? autoClose1 { set; get; }
         [MaxLength(5)]
         public string? autoClose2 { set; get; }

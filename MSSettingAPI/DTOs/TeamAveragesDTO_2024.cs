@@ -22,5 +22,8 @@ namespace RRScout.DTOs
         public int climbAttempts { get; set; } = 0;
         public int numMatches { get; set; } = 0;
         public decimal totalPoints { get; set; } = 0;
+        public decimal closeAutoAvg { get; set; } = 0;
+        public int closeAutoNum { get; set; } = 0;
+        public decimal? feedAvg { get; set; } = 0;
     }
 }
