@@ -121,6 +121,33 @@ namespace RRScout.Controllers
                 {
                     newAverage.closeAutoAvg += 1;
                 }
+            }else if (CheckIfCenter(match)){
+                newAverage.centerAutoNum += 1;
+
+                if (match.autoCenter1 == "Make")
+                {
+                    newAverage.centerAutoAvg += 1;
+                }
+                if (match.autoCenter2 == "Make")
+                {
+                    newAverage.centerAutoAvg += 1;
+                }
+                if (match.autoCenter3 == "Make")
+                {
+                    newAverage.centerAutoAvg += 1;
+                }
+                if (match.autoCenter4 == "Make")
+                {
+                    newAverage.centerAutoAvg += 1;
+                }
+                if (match.autoCenter5 == "Make")
+                {
+                    newAverage.centerAutoAvg += 1;
+                }
+                if (match.autoPreload == "Make")
+                {
+                    newAverage.centerAutoAvg += 1;
+                }
             }
 
         }
@@ -128,6 +155,14 @@ namespace RRScout.Controllers
         private static Boolean CheckIfClose(MatchData_2024 match)
         {
             if (match.autoClose1Order > 0 && match.autoClose2Order > 0 && match.autoClose3Order > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        private static Boolean CheckIfCenter(MatchData_2024 match)
+        {
+            if (match.autoClose1Order == 0 && match.autoClose2Order == 0 && match.autoClose3Order == 0 && (match.autoCenter1Order > 0 || match.autoCenter2Order > 0 || match.autoCenter3Order > 0 || match.autoCenter4Order > 0 || match.autoCenter5Order > 0 ))
             {
                 return true;
             }
@@ -164,7 +199,12 @@ namespace RRScout.Controllers
             {
                 newAverage.closeAutoAvg = (newAverage.closeAutoAvg / newAverage.closeAutoNum);
             }
-            
+
+            if (newAverage.centerAutoNum > 0)
+            {
+                newAverage.centerAutoAvg = (newAverage.centerAutoAvg / newAverage.centerAutoNum);
+            }
+
             newAverage.totalPoints =
                 (decimal)((newAverage.autoAmpAvg * 2) +
                 (newAverage.autoSpeakerAvg * 5) +
