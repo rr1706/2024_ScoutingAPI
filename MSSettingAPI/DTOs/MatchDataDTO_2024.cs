@@ -21,7 +21,6 @@ namespace RRScout.DTOs
         [MaxLength(20)]
         public string? climb { get; set; }
         [MaxLength(3)]
-        public string? playedDefense { get; set; }
         public string? comment { get; set; }
 
         public string? autoPreload { get;set; }

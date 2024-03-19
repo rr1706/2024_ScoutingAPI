@@ -17,8 +17,6 @@ namespace RRScout.Entities
         public int teleTrap { get; set; }
         [MaxLength(20)]
         public string? climb { get; set; }
-        [MaxLength(3)]
-        public string? playedDefense { get; set; }
         [MaxLength(500)]
         public string? comment { get; set; }
         [MaxLength(5)]
