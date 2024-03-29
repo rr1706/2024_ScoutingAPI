@@ -20,7 +20,7 @@ namespace RRScout.DTOs
         public int teleTrap { get; set; }
         [MaxLength(20)]
         public string? climb { get; set; }
-        [MaxLength(3)]
+        [MaxLength(500)]
         public string? comment { get; set; }
 
         public string? autoPreload { get;set; }
@@ -50,5 +50,7 @@ namespace RRScout.DTOs
         public int? autoCenter5Order { get; set; }
 
         public int? teleFeeds { set; get; }
+        [MaxLength(50)]
+        public string? scoutName { get; set; }
     }
 }

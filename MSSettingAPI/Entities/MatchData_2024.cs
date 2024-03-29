@@ -47,5 +47,7 @@ namespace RRScout.Entities
         public int? autoCenter4Order { get; set; }
         public int? autoCenter5Order { get; set; }
         public int? teleFeeds { set; get; }
+        [MaxLength(50)]
+        public string? scoutName { get; set; }
     }
 }
