@@ -94,6 +94,17 @@ namespace RRScout.Controllers
             newAverage.teleSpeakerAvg += match.teleSpeaker;
             newAverage.teleTrapAvg += match.teleTrap;
             newAverage.feedAvg += match.teleFeeds;
+
+            if (newAverage.maxFeeds == null)
+            {
+                newAverage.maxFeeds = match.teleFeeds;
+            }
+            else if (newAverage.maxFeeds < match.teleFeeds)
+            {
+                newAverage.maxFeeds = match.teleFeeds;
+
+            }
+
             if (match.climb == "Yes")
             {
                 newAverage.climbPercent += 1;
@@ -102,7 +113,36 @@ namespace RRScout.Controllers
             {
                 newAverage.climbAttempts += 1;
             }
-            if (CheckIfClose(match)){
+
+
+            if (match.autoClose1 == "Make")
+            {
+                newAverage.closeAutoPercent += 1;
+            }
+            if (match.autoClose2 == "Make")
+            {
+                newAverage.closeAutoPercent += 1;
+            }
+            if (match.autoClose3 == "Make")
+            {
+                newAverage.closeAutoPercent += 1;
+            }
+
+            if (match.autoClose1 == "Make" || match.autoClose1 == "Miss")
+            {
+                newAverage.closeAutoAttempts += 1;
+            }
+            if (match.autoClose2 == "Make" || match.autoClose2 == "Miss")
+            {
+                newAverage.closeAutoAttempts += 1;
+            }
+            if (match.autoClose3 == "Make" || match.autoClose3 == "Miss")
+            {
+                newAverage.closeAutoAttempts += 1;
+            }
+
+            if (CheckIfClose(match))
+            {
                 newAverage.closeAutoNum += 1;
 
                 if (match.autoClose1 == "Make")
@@ -185,6 +225,17 @@ namespace RRScout.Controllers
             newAverage.climbSuccessRate = newAverage.climbPercent;
             newAverage.climbPercent = (newAverage.climbPercent / newAverage.numMatches)*100;
 
+            newAverage.closeAutoSuccessRate = newAverage.closeAutoPercent;
+            newAverage.closeAutoPercent = (newAverage.closeAutoPercent / newAverage.numMatches) * 100;
+
+            if (newAverage.closeAutoAttempts > 0)
+            {
+                newAverage.closeAutoSuccessRate = (newAverage.closeAutoSuccessRate / newAverage.closeAutoAttempts) * 100;
+            }
+            else
+            {
+                newAverage.closeAutoSuccessRate = 0;
+            }
 
             if (newAverage.climbAttempts > 0)
             {

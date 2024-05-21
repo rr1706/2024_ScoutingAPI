@@ -31,9 +31,17 @@ namespace RRScout.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<PicklistOrderDTO>>> Get(string eventID)
         {
-            var email = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "email").Value;
-            var order = await Context.PicklistOrder.Where(x => x.eventCode == eventID && x.email == email).OrderBy(x => x.order).ToListAsync();
-            return Ok(mapper.Map<List<PicklistOrderDTO>>(order));
+            try
+            {
+                var email = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "email").Value;
+                var order = await Context.PicklistOrder.Where(x => x.eventCode == eventID && x.email == email).OrderBy(x => x.order).ToListAsync();
+                return Ok(mapper.Map<List<PicklistOrderDTO>>(order));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPost("save")]
@@ -49,6 +57,7 @@ namespace RRScout.Controllers
                     var entity = await Context.PicklistOrder.FirstOrDefaultAsync(x => x.teamNumber == team.teamNumber && x.eventCode == team.eventCode && x.email == email);
                     if (entity != null) { 
                         entity.order = team.order;
+                        entity.DNPed = team.DNPed;
                         await Context.SaveChangesAsync();
                     }
                     else
@@ -58,6 +67,7 @@ namespace RRScout.Controllers
                         newTeam.eventCode = team.eventCode;
                         newTeam.order = team.order;
                         newTeam.email = email;
+                        newTeam.DNPed = team.DNPed;
                         await Context.PicklistOrder.AddAsync(newTeam);
                         await Context.SaveChangesAsync();
                     }

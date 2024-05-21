@@ -27,5 +27,10 @@ namespace RRScout.Entities
         public decimal? feedAvg { get; set; } = 0;
         public decimal centerAutoAvg { get; set; } = 0;
         public int centerAutoNum { get; set; } = 0;
+        public int? maxFeeds {  get; set; } = 0;
+        public decimal? closeAutoPercent { get; set; } = 0;
+        public decimal? closeAutoAttempts { get; set; } = 0;
+        public decimal? closeAutoSuccessRate { get; set; } = 0;
+        public int? DNPed {  get; set; } = 0;
     }
 }

@@ -13,5 +13,7 @@ namespace RRScout.DTOs
         public int teamNumber { get; set; }
         [Required]
         public int order { get; set; }
+        public int DNPed { get; set; }
+
     }
 }

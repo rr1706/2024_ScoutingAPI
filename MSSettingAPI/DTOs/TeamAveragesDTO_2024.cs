@@ -28,5 +28,6 @@ namespace RRScout.DTOs
 
         public decimal centerAutoAvg { get; set; } = 0;
         public int centerAutoNum { get; set; } = 0;
+        public int? maxFeeds { get; set; } = 0;
     }
 }
