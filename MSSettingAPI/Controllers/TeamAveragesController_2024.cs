@@ -226,7 +226,6 @@ namespace RRScout.Controllers
             newAverage.climbPercent = (newAverage.climbPercent / newAverage.numMatches)*100;
 
             newAverage.closeAutoSuccessRate = newAverage.closeAutoPercent;
-            newAverage.closeAutoPercent = (newAverage.closeAutoPercent / newAverage.numMatches) * 100;
 
             if (newAverage.closeAutoAttempts > 0)
             {

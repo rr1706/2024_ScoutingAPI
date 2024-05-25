@@ -25,7 +25,6 @@ namespace RRScout.DTOs
         public decimal closeAutoAvg { get; set; } = 0;
         public int closeAutoNum { get; set; } = 0;
         public decimal? feedAvg { get; set; } = 0;
-
         public decimal centerAutoAvg { get; set; } = 0;
         public int centerAutoNum { get; set; } = 0;
         public int? maxFeeds { get; set; } = 0;

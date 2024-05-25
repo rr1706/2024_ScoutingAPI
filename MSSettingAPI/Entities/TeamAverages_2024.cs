@@ -31,6 +31,5 @@ namespace RRScout.Entities
         public decimal? closeAutoPercent { get; set; } = 0;
         public decimal? closeAutoAttempts { get; set; } = 0;
         public decimal? closeAutoSuccessRate { get; set; } = 0;
-        public int? DNPed {  get; set; } = 0;
     }
 }
