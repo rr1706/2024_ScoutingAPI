@@ -87,109 +87,112 @@ namespace RRScout.Controllers
 
         private static void AddMatch(TeamAverages_2024 newAverage, MatchData_2024 match)
         {
-            newAverage.numMatches += 1;
-            newAverage.autoAmpAvg += match.autoAmp;
-            newAverage.autoSpeakerAvg += match.autoSpeaker;
-            newAverage.teleAmpAvg += match.teleAmp;
-            newAverage.teleSpeakerAvg += match.teleSpeaker;
-            newAverage.teleTrapAvg += match.teleTrap;
-            newAverage.feedAvg += match.teleFeeds;
 
-            if (newAverage.maxFeeds == null)
-            {
-                newAverage.maxFeeds = match.teleFeeds;
-            }
-            else if (newAverage.maxFeeds < match.teleFeeds)
-            {
-                newAverage.maxFeeds = match.teleFeeds;
+            if (match.ignore == 0)
+            { 
+                newAverage.numMatches += 1;
+                newAverage.autoAmpAvg += match.autoAmp;
+                newAverage.autoSpeakerAvg += match.autoSpeaker;
+                newAverage.teleAmpAvg += match.teleAmp;
+                newAverage.teleSpeakerAvg += match.teleSpeaker;
+                newAverage.teleTrapAvg += match.teleTrap;
+                newAverage.feedAvg += match.teleFeeds;
 
-            }
+                if (newAverage.maxFeeds == null)
+                {
+                    newAverage.maxFeeds = match.teleFeeds;
+                }
+                else if (newAverage.maxFeeds < match.teleFeeds)
+                {
+                    newAverage.maxFeeds = match.teleFeeds;
 
-            if (match.climb == "Yes")
-            {
-                newAverage.climbPercent += 1;
-            }
-            if (match.climb == "Yes" || match.climb == "Fail")
-            {
-                newAverage.climbAttempts += 1;
-            }
+                }
 
+                if (match.climb == "Yes")
+                {
+                    newAverage.climbPercent += 1;
+                }
+                if (match.climb == "Yes" || match.climb == "Fail")
+                {
+                    newAverage.climbAttempts += 1;
+                }
 
-            if (match.autoClose1 == "Make")
-            {
-                newAverage.closeAutoPercent += 1;
-            }
-            if (match.autoClose2 == "Make")
-            {
-                newAverage.closeAutoPercent += 1;
-            }
-            if (match.autoClose3 == "Make")
-            {
-                newAverage.closeAutoPercent += 1;
-            }
-
-            if (match.autoClose1 == "Make" || match.autoClose1 == "Miss")
-            {
-                newAverage.closeAutoAttempts += 1;
-            }
-            if (match.autoClose2 == "Make" || match.autoClose2 == "Miss")
-            {
-                newAverage.closeAutoAttempts += 1;
-            }
-            if (match.autoClose3 == "Make" || match.autoClose3 == "Miss")
-            {
-                newAverage.closeAutoAttempts += 1;
-            }
-
-            if (CheckIfClose(match))
-            {
-                newAverage.closeAutoNum += 1;
 
                 if (match.autoClose1 == "Make")
                 {
-                    newAverage.closeAutoAvg += 1;
+                    newAverage.closeAutoPercent += 1;
                 }
                 if (match.autoClose2 == "Make")
                 {
-                    newAverage.closeAutoAvg += 1;
+                    newAverage.closeAutoPercent += 1;
                 }
                 if (match.autoClose3 == "Make")
                 {
-                    newAverage.closeAutoAvg += 1;
+                    newAverage.closeAutoPercent += 1;
                 }
-                if (match.autoPreload == "Make")
-                {
-                    newAverage.closeAutoAvg += 1;
-                }
-            }else if (CheckIfCenter(match)){
-                newAverage.centerAutoNum += 1;
 
-                if (match.autoCenter1 == "Make")
+                if (match.autoClose1 == "Make" || match.autoClose1 == "Miss")
                 {
-                    newAverage.centerAutoAvg += 1;
+                    newAverage.closeAutoAttempts += 1;
                 }
-                if (match.autoCenter2 == "Make")
+                if (match.autoClose2 == "Make" || match.autoClose2 == "Miss")
                 {
-                    newAverage.centerAutoAvg += 1;
+                    newAverage.closeAutoAttempts += 1;
                 }
-                if (match.autoCenter3 == "Make")
+                if (match.autoClose3 == "Make" || match.autoClose3 == "Miss")
                 {
-                    newAverage.centerAutoAvg += 1;
+                    newAverage.closeAutoAttempts += 1;
                 }
-                if (match.autoCenter4 == "Make")
+
+                if (CheckIfClose(match))
                 {
-                    newAverage.centerAutoAvg += 1;
-                }
-                if (match.autoCenter5 == "Make")
-                {
-                    newAverage.centerAutoAvg += 1;
-                }
-                if (match.autoPreload == "Make")
-                {
-                    newAverage.centerAutoAvg += 1;
+                    newAverage.closeAutoNum += 1;
+
+                    if (match.autoClose1 == "Make")
+                    {
+                        newAverage.closeAutoAvg += 1;
+                    }
+                    if (match.autoClose2 == "Make")
+                    {
+                        newAverage.closeAutoAvg += 1;
+                    }
+                    if (match.autoClose3 == "Make")
+                    {
+                        newAverage.closeAutoAvg += 1;
+                    }
+                    if (match.autoPreload == "Make")
+                    {
+                        newAverage.closeAutoAvg += 1;
+                    }
+                }else if (CheckIfCenter(match)){
+                    newAverage.centerAutoNum += 1;
+
+                    if (match.autoCenter1 == "Make")
+                    {
+                        newAverage.centerAutoAvg += 1;
+                    }
+                    if (match.autoCenter2 == "Make")
+                    {
+                        newAverage.centerAutoAvg += 1;
+                    }
+                    if (match.autoCenter3 == "Make")
+                    {
+                        newAverage.centerAutoAvg += 1;
+                    }
+                    if (match.autoCenter4 == "Make")
+                    {
+                        newAverage.centerAutoAvg += 1;
+                    }
+                    if (match.autoCenter5 == "Make")
+                    {
+                        newAverage.centerAutoAvg += 1;
+                    }
+                    if (match.autoPreload == "Make")
+                    {
+                        newAverage.centerAutoAvg += 1;
+                    }
                 }
             }
-
         }
 
         private static Boolean CheckIfClose(MatchData_2024 match)
@@ -211,6 +214,10 @@ namespace RRScout.Controllers
 
         private static void CalculateAverages(TeamAverages_2024 newAverage)
         {
+            if (newAverage.numMatches < 1)
+            {
+                return;
+            }
             newAverage.autoAmpAvg = newAverage.autoAmpAvg / newAverage.numMatches;
             newAverage.autoSpeakerAvg = newAverage.autoSpeakerAvg / newAverage.numMatches;
             newAverage.teleSpeakerAvg = newAverage.teleSpeakerAvg / newAverage.numMatches;

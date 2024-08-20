@@ -49,5 +49,6 @@ namespace RRScout.Entities
         public int? teleFeeds { set; get; }
         [MaxLength(50)]
         public string? scoutName { get; set; }
+        public int ignore { get; set; }
     }
 }

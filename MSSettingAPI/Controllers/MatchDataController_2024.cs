@@ -66,6 +66,19 @@ namespace RRScout.Controllers
             var matchData = await Context.MatchData_2024.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
             return Ok(mapper.Map<List<MatchDataDTO_2024>>(matchData));
         }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("sendignore/{matchID}/{ignore}")]
+        public async Task<ActionResult<List<MatchDataDTO_2024>>> SendIgnore(int matchID, int ignore)
+        {
+            var match = await Context.MatchData_2024.Where(x => x.id == matchID).FirstOrDefaultAsync();
+            if (match != null)
+            {
+                match.ignore = ignore;
+                Context.SaveChanges();
+            }
+            return Ok();
+        }
     }
 
 
