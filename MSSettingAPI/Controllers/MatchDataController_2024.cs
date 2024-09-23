@@ -79,7 +79,24 @@ namespace RRScout.Controllers
             }
             return Ok();
         }
-    }
+    
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost("updatematchbymatch")]
+    public async Task<ActionResult<List<MatchDataDTO_2024>>> updateMatchByMatch(MatchDataDTO_2024 matchData)
+    {
+        var match = await Context.MatchData_2024.Where(x => x.id == matchData.id).FirstOrDefaultAsync();
+        if (match != null)
+        {
+            match.teleSpeaker = matchData.teleSpeaker;
+            match.teleAmp = matchData.teleAmp;
+            match.teleFeeds = matchData.teleFeeds;
+            match.teleTrap = matchData.teleTrap;
+            match.climb = matchData.climb;
+            Context.SaveChanges();
+        }
+        return Ok();
+    }
+}
 
 }
