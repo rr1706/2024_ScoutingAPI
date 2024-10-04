@@ -15,9 +15,9 @@ namespace RRScout.DTOs
         public int matchNumber { get; set; }
         public int autoAmp { get; set; }
         public int autoSpeaker { get; set; }
-        [Range(1, 50, ErrorMessage = "TeleAmp must be between 1 to 50")]
+        [Range(0, 50, ErrorMessage = "TeleAmp must be between 0 to 50")]
         public int teleAmp { get; set; }
-        [Range(1, 50, ErrorMessage = "TeleSpeaker must be between 1 to 50")]
+        [Range(0, 50, ErrorMessage = "TeleSpeaker must be between 0 to 50")]
         public int teleSpeaker { get; set; }
         public int teleTrap { get; set; }
         [MaxLength(20)]
@@ -50,7 +50,7 @@ namespace RRScout.DTOs
         public int? autoCenter3Order { get; set; }
         public int? autoCenter4Order { get; set; }
         public int? autoCenter5Order { get; set; }
-        [Range(1, 100, ErrorMessage = "Feeds must be between 1 to 100")]
+        [Range(0, 100, ErrorMessage = "Feeds must be between 0 to 100")]
 
         public int? teleFeeds { set; get; }
         [MaxLength(50)]
