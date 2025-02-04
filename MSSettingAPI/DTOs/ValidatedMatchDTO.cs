@@ -10,5 +10,7 @@ namespace RRScout.DTOs
         public int currentValue { get; set; }
         public int correctValue { get; set; }   
         public string matchVideo { get; set; }
+
+        public string allianceColor { get; set; }
     }
 }

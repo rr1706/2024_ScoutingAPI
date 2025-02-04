@@ -28,5 +28,8 @@ namespace RRScout
         public DbSet<MatchSchedule> MatchSchedule { get; set; }
 
         public DbSet<RobotPhoto> RobotPhotos { get; set; }
+
+        public DbSet<TeamAverages_2025> TeamAverages_2025 { get; set; }
+        public DbSet<MatchData_2025> MatchData_2025 { get; set; }
     }
 }
