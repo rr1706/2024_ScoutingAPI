@@ -13,7 +13,7 @@ namespace RRScout.DTOs
         public decimal? averageTeleCoral { get; set; } = 0;
         public decimal? averageBargeAll { get; set; } = 0;
         public decimal? averageProcessorAll { get; set; } = 0;
-        public int? successfulDeepClimb { get; set; } = 0;
+        public int? succesfulDeepClimb { get; set; } = 0;
         public int? totalDeepClimb { get; set; } = 0;
         public int? successfulShallowClimb { get; set; } = 0;
         public int? totalShallowClimb { get; set; } = 0;
