@@ -65,9 +65,10 @@ namespace RRScout.Helpers
                     match.score_breakdown.red.autoL4 = getNumberCoralScored(match.score_breakdown.red.autoReef.topRow);
 
                     match.score_breakdown.red.teleL1 = match.score_breakdown.red.teleopReef.trough;
-                    match.score_breakdown.red.teleL2 = getNumberCoralScored(match.score_breakdown.red.teleopReef.botRow);
-                    match.score_breakdown.red.teleL3 = getNumberCoralScored(match.score_breakdown.red.teleopReef.midRow);
-                    match.score_breakdown.red.teleL4 = getNumberCoralScored(match.score_breakdown.red.teleopReef.topRow);
+                    match.score_breakdown.red.teleL2 = getNumberCoralScored(match.score_breakdown.red.teleopReef.botRow) - match.score_breakdown.red.autoL2;
+                    match.score_breakdown.red.teleL3 = getNumberCoralScored(match.score_breakdown.red.teleopReef.midRow)
+                        - match.score_breakdown.red.autoL3;
+                    match.score_breakdown.red.teleL4 = getNumberCoralScored(match.score_breakdown.red.teleopReef.topRow) - match.score_breakdown.red.autoL4;
 
                     match.score_breakdown.blue.autoL1 = match.score_breakdown.blue.autoReef.trough;
                     match.score_breakdown.blue.autoL2 = getNumberCoralScored(match.score_breakdown.blue.autoReef.botRow);
@@ -75,11 +76,9 @@ namespace RRScout.Helpers
                     match.score_breakdown.blue.autoL4 = getNumberCoralScored(match.score_breakdown.blue.autoReef.topRow);
 
                     match.score_breakdown.blue.teleL1 = match.score_breakdown.blue.teleopReef.trough;
-                    match.score_breakdown.blue.teleL2 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.botRow);
-                    match.score_breakdown.blue.teleL3 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.midRow);
-                    match.score_breakdown.blue.teleL4 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.topRow);
-
-
+                    match.score_breakdown.blue.teleL2 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.botRow)- match.score_breakdown.blue.autoL2;
+                    match.score_breakdown.blue.teleL3 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.midRow)- match.score_breakdown.blue.autoL3;
+                    match.score_breakdown.blue.teleL4 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.topRow) - match.score_breakdown.blue.autoL4;
                 }
             }
         }
