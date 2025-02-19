@@ -19,6 +19,7 @@ namespace RRScout.Helpers
             CreateMap<MatchData_2025, MatchDataDTO_2025>().ReverseMap();
             CreateMap<Event, EventDTO>().ReverseMap();
             CreateMap<MatchSchedule, MatchScheduleDTO>().ReverseMap();
+            CreateMap<SuperScoutData_2025, SuperScoutDataDTO_2025>().ReverseMap();
         }
 
     }
