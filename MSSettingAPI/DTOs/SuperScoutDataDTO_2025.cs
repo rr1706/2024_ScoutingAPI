@@ -13,5 +13,9 @@ namespace RRScout.DTOs
         public string scoutName { get; set; }
         public string comments { get; set; }
         public string type { get; set; }
+        public string drivetrain { get; set; }
+        public int batteryCount { get; set; }
+        public string batteryAge { get; set; }
+
     }
 }
