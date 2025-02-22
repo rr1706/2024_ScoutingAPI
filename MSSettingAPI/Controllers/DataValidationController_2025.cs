@@ -24,7 +24,17 @@ namespace RRScout.Controllers
         private readonly ApplicationDbContext Context;
         private readonly IMapper mapper;
 
-        private const int autoSpeakerConst = 2;
+        private const int autoL1Error = 1;
+        private const int autoL2Error = 1;
+        private const int autoL3Error = 1;
+        private const int autoL4Error = 1;
+        private const int teleL1Error = 1;
+        private const int teleL2Error = 1;
+        private const int teleL3Error = 1;
+        private const int teleL4Error = 1;
+        private const int processor = 2;
+        private const int net = 2;
+
         private const int teleopSpeakerConst = 3;
 
         public DataValidation_2025(ApplicationDbContext context, IMapper mapper)
@@ -35,74 +45,146 @@ namespace RRScout.Controllers
 
       //  GET: api/DataValidation/getTBAFlaggedMatches
        [HttpGet("getTBAFlaggedMatches")]
-        public async Task<ActionResult<List<TBAMatch_2025>>> GetTBAFlaggedMatches(string eventID)
+        public async Task<ActionResult<List<ValidatedMatchDTO>>> GetTBAFlaggedMatches(string eventID)
         {
 
             List<ValidatedMatchDTO> validatedMatches = new List<ValidatedMatchDTO>();
 
-
-            var TBAMatches = await TBAHelper.getMatchData(eventID);
-
-            return Ok(TBAMatches);
+            RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
+            var TBAMatches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
 
             var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
 
 
+            //correct mobilitize and end game automatically
 
 
-            //foreach (var tbaMatch in TBAMatches)
-            //{
-            //    if (tbaMatch.score_breakdown != null && tbaMatch.comp_level == "qm")
-            //    {
-            //        //check if match is in matchData
 
-            //        //red
-            //        MatchData_2025 red1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[0])).FirstOrDefault();
-            //        MatchData_2025 red2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[1])).FirstOrDefault();
-            //        MatchData_2025 red3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[2])).FirstOrDefault();
 
-            //        //blue
-            //        MatchData_2025 blue1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[0])).FirstOrDefault();
-            //        MatchData_2025 blue2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[1])).FirstOrDefault();
-            //        MatchData_2025 blue3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[2])).FirstOrDefault();
+            foreach (var tbaMatch in TBAMatches)
+            {
+                if (tbaMatch.score_breakdown != null && tbaMatch.comp_level == "qm")
+                {
+                    //check if match is in matchData
 
-            //        //Checking Autospeaker + TeleopSpeaker
+                    //red
+                    MatchData_2025 red1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[0])).FirstOrDefault();
+                    MatchData_2025 red2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[1])).FirstOrDefault();
+                    MatchData_2025 red3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[2])).FirstOrDefault();
 
-            //        //red
-            //        if (red1 != null && red2 != null && red3 != null)
-            //        {
-            //            var ourRedAutoSpeaker = red1.autoSpeaker + red2.autoSpeaker + red3.autoSpeaker;
-            //            var ourRedTeleopSpeaker = red1.teleSpeaker + red2.teleSpeaker + red3.teleSpeaker;
-            //            if (Math.Abs(ourRedAutoSpeaker - tbaMatch.score_breakdown.red.autoSpeakerNoteCount) > autoSpeakerConst)
-            //            {
-            //                AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoSpeaker", ourRedAutoSpeaker, tbaMatch.score_breakdown.red.autoSpeakerNoteCount, red1.teamNumber, red2.teamNumber, red3.teamNumber, tbaMatch.videos[0].key, "Red");
+                    //blue
+                    MatchData_2025 blue1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[0])).FirstOrDefault();
+                    MatchData_2025 blue2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[1])).FirstOrDefault();
+                    MatchData_2025 blue3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[2])).FirstOrDefault();
 
-            //            }
+                    if (red1 != null)
+                    {
+                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1) != red1.mobilitize)
+                        {
+                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1);
+                            red1.mobilitize = correctMobility;
+                            red1.edited = 1;
+                            Context.SaveChangesAsync();
 
-            //            if (Math.Abs(ourRedTeleopSpeaker - tbaMatch.score_breakdown.red.teleopSpeakerNoteCount) > teleopSpeakerConst)
-            //            {
-            //                AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "teleSpeaker", ourRedTeleopSpeaker, tbaMatch.score_breakdown.red.teleopSpeakerNoteCount, red1.teamNumber, red2.teamNumber, red3.teamNumber, tbaMatch.videos[0].key, "Red");
-            //            }
-            //        }
+                        }
 
-            //        //blue
-            //        if (blue1 != null && blue2 != null && blue3 != null)
-            //        {
-            //            var ourBlueAutoSpeaker = blue1.autoSpeaker + blue2.autoSpeaker + blue3.autoSpeaker;
-            //            var ourBlueTeleopSpeaker = blue1.teleSpeaker + blue2.teleSpeaker + blue3.teleSpeaker;
-            //            if (Math.Abs(ourBlueAutoSpeaker - tbaMatch.score_breakdown.blue.autoSpeakerNoteCount) > autoSpeakerConst)
-            //            {
-            //                AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoSpeaker", ourBlueAutoSpeaker, tbaMatch.score_breakdown.blue.autoSpeakerNoteCount, blue1.teamNumber, blue2.teamNumber, blue3.teamNumber, tbaMatch.videos[0].key, "Blue");
+                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot1);
+                        if (tbaEnd != red1.endClimb)
+                        {
+                            if(tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            {
+                                red1.endClimb = tbaEnd;
+                                red1.edited = 1;
+                                Context.SaveChangesAsync();
 
-            //            }
+                            }
+                            else if (red1.endClimb == "Deep" || red1.endClimb == "Shallow")
+                            {
+                                red1.endClimb = "No";
+                                red1.edited = 1;
+                                Context.SaveChangesAsync();
+                            }
+                        }
+                    }
+                    if (red2 != null)
+                    {
+                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != red2.mobilitize)
+                        {
+                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2);
+                            red2.mobilitize = correctMobility;
+                            red2.edited = 1;
+                            Context.SaveChangesAsync();
 
-            //            if (Math.Abs(ourBlueTeleopSpeaker - tbaMatch.score_breakdown.blue.teleopSpeakerNoteCount) > teleopSpeakerConst)
-            //            {
-            //                AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "teleSpeaker", ourBlueTeleopSpeaker, tbaMatch.score_breakdown.blue.teleopSpeakerNoteCount, blue1.teamNumber, blue2.teamNumber, blue3.teamNumber, tbaMatch.videos[0].key, "Blue");
-            //            }
-            //        }
-            //    }
-            //}
+                        }
+                    }
+                    if (red3 != null)
+                    {
+                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != red3.mobilitize)
+                        {
+                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot3);
+                            red3.mobilitize = correctMobility;
+                            red3.edited = 1;
+                            Context.SaveChangesAsync();
+
+                        }
+                    }
+                    if (blue1 != null)
+                    {
+                        if (ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1) != blue1.mobilitize)
+                        {
+                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1);
+                            blue1.mobilitize = correctMobility;
+                            blue1.edited = 1;
+                            Context.SaveChangesAsync();
+
+                        }
+                    }
+                    if (blue2 != null)
+                    {
+                        if (ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2) != blue2.mobilitize)
+                        {
+                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2);
+                            blue2.mobilitize = correctMobility;
+                            blue2.edited = 1;
+                            Context.SaveChangesAsync();
+
+                        }
+                    }
+                    if (blue3 != null)
+                    {
+                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != blue3.mobilitize)
+                        {
+                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot3);
+                            blue3.mobilitize = correctMobility;
+                            blue3.edited = 1;
+                            Context.SaveChangesAsync();
+
+                        }
+                    }
+
+                    //red
+                    if (red1 != null && red2 != null && red3 != null)
+                    {
+                        var ourAutoCoralL1 = red1.autoCoralL1 + red2.autoCoralL1 + red3.autoCoralL1;
+                        if (Math.Abs(ourAutoCoralL1 - tbaMatch.score_breakdown.red.autoL1) > autoL1Error)
+                        {
+                            AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoCoralL1", ourAutoCoralL1, tbaMatch.score_breakdown.red.autoL1, red1.teamNumber, red2.teamNumber, red3.teamNumber, tbaMatch.videos[0].key, "Red");
+
+                        }
+                    }
+
+                    //blue
+                    if (blue1 != null && blue2 != null && blue3 != null)
+                    {
+                        var ourAutoCoralL1 = blue1.autoCoralL1 + blue2.autoCoralL1 + blue3.autoCoralL1;
+                        if (Math.Abs(ourAutoCoralL1 - tbaMatch.score_breakdown.red.autoL1) > autoL1Error)
+                        {
+                            AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoCoralL1", ourAutoCoralL1, tbaMatch.score_breakdown.blue.autoL1, blue1.teamNumber, blue2.teamNumber, blue3.teamNumber, tbaMatch.videos[0].key, "Blue");
+
+                        }
+                    }
+                }
+            }
             validatedMatches = validatedMatches.OrderBy(x => x.matchNumber).ToList();
             return Ok(validatedMatches);
 
@@ -117,11 +199,67 @@ namespace RRScout.Controllers
                 correctValue = correctValue,
                 teamNumbers = new List<int> { team1, team2, team3 },
                 matchVideo = matchVideo,
-                allianceColor = allianceColor + " Alliance"
+                allianceColor = allianceColor,
             };
             validatedMatches.Add(newMatch);
         }
+        private static int ConvertMoblity(string mobility)
+        {
+            if (mobility == "Yes")
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
+        private static string convertEndGame(string climb)
+        {
+            if (climb.Contains("Deep")){
+                return "Deep";
+            }else if (climb.Contains("Shallow")){
+                return "Shallow";
+            }
+            else
+            {
+                return "No";
+            }
+        }
+
+        private async void updateMobility(MatchData_2025 match, int updatedValue)
+        {
+            var dbMatch = await Context.MatchData_2025.Where(x => x.id == match.id).FirstOrDefaultAsync();
+            if (dbMatch != null)
+            {
+                //dbMatch.coralL1 = dbMatch.coralL1;
+                //dbMatch.coralL2 = dbMatch.coralL2;
+                //dbMatch.coralL3 = dbMatch.coralL3;
+                //dbMatch.coralL4 = dbMatch.coralL4;
+                //dbMatch.autoCoralL1 = dbMatch.autoCoralL1;
+                //dbMatch.autoCoralL2 = dbMatch.autoCoralL2;
+                //dbMatch.autoCoralL3 = dbMatch.autoCoralL3;
+                //dbMatch.autoCoralL4 = dbMatch.autoCoralL4;
+                //dbMatch.processor = dbMatch.processor;
+                //dbMatch.autoProcessor = dbMatch.autoProcessor;
+                //dbMatch.endClimb = dbMatch.endClimb;
+                //dbMatch.groundAlgae = dbMatch.groundAlgae;
+                //dbMatch.autoGroundAlgae = dbMatch.autoGroundAlgae;
+                //dbMatch.reefAlgae = dbMatch.reefAlgae;
+                //dbMatch.autoReefAlgae = dbMatch.autoReefAlgae;
+                //dbMatch.barge = dbMatch.barge;
+                //dbMatch.autoBarge = dbMatch.autoBarge;
+                //dbMatch.defence = dbMatch.defence;
+                //dbMatch.defended = dbMatch.defended;
+                //dbMatch.mobilitize = dbMatch.mobilitize;
+                //dbMatch.doNotPick = dbMatch.doNotPick;
+                dbMatch.mobilitize = updatedValue;
+
+                Context.SaveChanges();
+            }
+            return;
+        }
         
     }
 

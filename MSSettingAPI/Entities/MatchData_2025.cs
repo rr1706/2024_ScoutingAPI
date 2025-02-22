@@ -53,5 +53,6 @@ namespace RRScout.Entities
         public string? scoutName { get; set; }
         public int ignore { get; set; }
         public int doNotPick { get; set; }
+        public int? edited { get; set; }
     }
 }

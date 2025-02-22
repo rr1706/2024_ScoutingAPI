@@ -49,10 +49,9 @@ namespace RRScout.DTOs
         public int gambleAmount { get; set; }
         public string? notes { set; get; }
         public string? gambleColor { set; get; }
-
         public string? scoutName { get; set; }
         public int ignore { get; set; }
-
         public int doNotPick { get; set; }
+        public int edited { get; set; }
     }
 }
