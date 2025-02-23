@@ -34,11 +34,7 @@ namespace RRScout.Controllers
 
                 var exisitingMatches = await Context.SuperScoutData_2025.Where(x => x.eventCode == newSuperData.eventCode).ToListAsync();
 
-                var result = exisitingMatches.Where(x => x.eventCode == newSuperData.eventCode && x.matchNumber == newSuperData.matchNumber && x.teamNumber == newSuperData.teamNumber).ToList();
-                if (result.Count == 0)
-                {
-                    await Context.SuperScoutData_2025.AddAsync(newSuperData);
-                }
+                await Context.SuperScoutData_2025.AddAsync(newSuperData);
 
                 await Context.SaveChangesAsync();
 

@@ -88,6 +88,7 @@ namespace RRScout.Controllers
 
                         }
 
+                        //need to confirm this logic is correct
                         var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot1);
                         if (tbaEnd != red1.endClimb)
                         {
@@ -227,40 +228,6 @@ namespace RRScout.Controllers
                 return "No";
             }
         }
-
-        private async void updateMobility(MatchData_2025 match, int updatedValue)
-        {
-            var dbMatch = await Context.MatchData_2025.Where(x => x.id == match.id).FirstOrDefaultAsync();
-            if (dbMatch != null)
-            {
-                //dbMatch.coralL1 = dbMatch.coralL1;
-                //dbMatch.coralL2 = dbMatch.coralL2;
-                //dbMatch.coralL3 = dbMatch.coralL3;
-                //dbMatch.coralL4 = dbMatch.coralL4;
-                //dbMatch.autoCoralL1 = dbMatch.autoCoralL1;
-                //dbMatch.autoCoralL2 = dbMatch.autoCoralL2;
-                //dbMatch.autoCoralL3 = dbMatch.autoCoralL3;
-                //dbMatch.autoCoralL4 = dbMatch.autoCoralL4;
-                //dbMatch.processor = dbMatch.processor;
-                //dbMatch.autoProcessor = dbMatch.autoProcessor;
-                //dbMatch.endClimb = dbMatch.endClimb;
-                //dbMatch.groundAlgae = dbMatch.groundAlgae;
-                //dbMatch.autoGroundAlgae = dbMatch.autoGroundAlgae;
-                //dbMatch.reefAlgae = dbMatch.reefAlgae;
-                //dbMatch.autoReefAlgae = dbMatch.autoReefAlgae;
-                //dbMatch.barge = dbMatch.barge;
-                //dbMatch.autoBarge = dbMatch.autoBarge;
-                //dbMatch.defence = dbMatch.defence;
-                //dbMatch.defended = dbMatch.defended;
-                //dbMatch.mobilitize = dbMatch.mobilitize;
-                //dbMatch.doNotPick = dbMatch.doNotPick;
-                dbMatch.mobilitize = updatedValue;
-
-                Context.SaveChanges();
-            }
-            return;
-        }
-        
     }
 
 }
