@@ -36,18 +36,6 @@ namespace RRScout.Controllers
        [HttpGet("getAllMatches")]
         public async Task<ActionResult<List<TBAMatch_2025>>> GetAllMatches()
         {
-
-
-            //Eventually delete this out
-            var weekZero = new List<TBAMatch_2025>();
-
-            weekZero = await Helpers.TBAHelper.getMatchData("2025week0");
-
-            return Ok(weekZero);
-            //end delete
-
-
-
             var events = await TBAHelper.getAllEvents();
 
             var TBAMatches = new List<TBAMatch_2025>();
@@ -57,7 +45,7 @@ namespace RRScout.Controllers
             {
                 if (DateTime.TryParse(comp.start_date, out DateTime startDate) && startDate < DateTime.Now)
                 {
-                    TBAMatches.AddRange(await TBAHelper.getMatchData(comp.event_code));
+                    TBAMatches.AddRange(await TBAHelper.getMatchData("2025"+comp.event_code));
                 }
             }
 

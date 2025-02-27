@@ -11,6 +11,7 @@ using RRScout.DTOs;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RRScout.Entities;
 using RRScout.Helpers;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 
 
@@ -188,6 +189,63 @@ namespace RRScout.Controllers
             }
             validatedMatches = validatedMatches.OrderBy(x => x.matchNumber).ToList();
             return Ok(validatedMatches);
+
+        }
+        //  GET: api/DataValidation/getTBAFlaggedMatches
+        [HttpGet("getPredictionStandings")]
+        public async Task<ActionResult<List<PredictionsDTO>>> getPredictionStandings(string eventID)
+        {
+
+            List<PredictionsDTO> results = new List<PredictionsDTO>();
+
+            RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
+            var TBAMatches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
+
+            var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
+
+            var scoutNames = matchData.Select(x => x.scoutName).Distinct().ToList();
+
+            foreach (var scout in scoutNames)
+            {
+                PredictionsDTO newResult = new PredictionsDTO
+                {
+                    scoutName = scout,
+                    score = 0,
+                    numberMatches = 0,
+
+                };
+                results.Add(newResult);
+            }
+
+            foreach (var ourMatch in matchData)
+            {
+                var TBAMatch = TBAMatches.Where(x => x.match_number == ourMatch.matchNumber && x.comp_level == "qm").FirstOrDefault();
+
+                if (ourMatch.gambleColor == TBAMatch.winning_alliance)
+                {
+                    foreach (var scout in results)
+                    {
+                        if (scout.scoutName == ourMatch.scoutName)
+                        {
+                            scout.score = scout.score + ourMatch.gambleAmount;
+                            scout.numberMatches = scout.numberMatches + 1;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var scout in results)
+                    {
+                        if (scout.scoutName == ourMatch.scoutName)
+                        {
+                            scout.score = scout.score - ourMatch.gambleAmount;
+                            scout.numberMatches = scout.numberMatches + 1;
+                        }
+                    }
+                }
+            }
+            results = results.OrderByDescending(x => x.numberMatches).OrderByDescending(x => x.score).ToList();
+            return Ok(results);
 
         }
         private static void AddToValidatedMatches(List<ValidatedMatchDTO> validatedMatches, int matchNumber, string field, int currentValue, int correctValue, int team1, int team2, int team3, string matchVideo, string allianceColor)
