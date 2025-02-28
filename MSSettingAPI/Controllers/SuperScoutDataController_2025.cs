@@ -32,7 +32,7 @@ namespace RRScout.Controllers
             {
                 var newSuperData = mapper.Map<SuperScoutData_2025>(superScoutData);
 
-                var exisitingMatches = await Context.SuperScoutData_2025.Where(x => x.eventCode == newSuperData.eventCode).ToListAsync();
+                //var exisitingMatches = await Context.SuperScoutData_2025.Where(x => x.eventCode == newSuperData.eventCode).ToListAsync();
 
                 await Context.SuperScoutData_2025.AddAsync(newSuperData);
 
