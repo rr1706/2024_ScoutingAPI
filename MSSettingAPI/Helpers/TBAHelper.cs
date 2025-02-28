@@ -21,7 +21,9 @@ namespace RRScout.Helpers
 
             var TBAMatches = JsonSerializer.Deserialize<List<TBAMatch_2025>>(await response.Content.ReadAsStringAsync());
 
-            if (TBAMatches is not null)
+            TBAMatches = TBAMatches.Where(match => match.score_breakdown != null).ToList();
+
+            if (TBAMatches is not null) 
             {
                 TBAHelper.dataCleanup(TBAMatches);
             }
