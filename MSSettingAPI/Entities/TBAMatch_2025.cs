@@ -1,6 +1,6 @@
 public class TBAMatch_2025
 {
-    public long actual_time { get; set; }
+    public long? actual_time { get; set; }
     public Alliances alliances { get; set; }
     public string comp_level { get; set; }
     public string event_key { get; set; }
