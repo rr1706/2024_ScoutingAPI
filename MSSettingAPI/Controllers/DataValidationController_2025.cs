@@ -85,11 +85,12 @@ namespace RRScout.Controllers
                             var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1);
                             red1.mobilitize = correctMobility;
                             red1.edited = 1;
-                            Context.SaveChangesAsync();
+                            await Context.SaveChangesAsync();
 
                         }
 
                         //need to confirm this logic is correct
+                        //Is güt -Orrin
                         var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot1);
                         if (tbaEnd != red1.endClimb)
                         {
@@ -97,14 +98,14 @@ namespace RRScout.Controllers
                             {
                                 red1.endClimb = tbaEnd;
                                 red1.edited = 1;
-                                Context.SaveChangesAsync();
+                                await Context.SaveChangesAsync();
 
                             }
                             else if (red1.endClimb == "Deep" || red1.endClimb == "Shallow")
                             {
                                 red1.endClimb = "No";
                                 red1.edited = 1;
-                                Context.SaveChangesAsync();
+                                await Context.SaveChangesAsync();
                             }
                         }
                     }
@@ -115,9 +116,27 @@ namespace RRScout.Controllers
                             var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2);
                             red2.mobilitize = correctMobility;
                             red2.edited = 1;
-                            Context.SaveChangesAsync();
+                            await Context.SaveChangesAsync();
 
                         }
+                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot2);
+                        if (tbaEnd != red2.endClimb)
+                        {
+                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            {
+                                red2.endClimb = tbaEnd;
+                                red2.edited = 1;
+                                await Context.SaveChangesAsync();
+
+                            }
+                            else if (red2.endClimb == "Deep" || red2.endClimb == "Shallow")
+                            {
+                                red2.endClimb = "No";
+                                red2.edited = 1;
+                                await Context.SaveChangesAsync();
+                            }
+                        }
+
                     }
                     if (red3 != null)
                     {
@@ -126,8 +145,25 @@ namespace RRScout.Controllers
                             var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot3);
                             red3.mobilitize = correctMobility;
                             red3.edited = 1;
-                            Context.SaveChangesAsync();
+                            await Context.SaveChangesAsync();
 
+                        }
+                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot3);
+                        if (tbaEnd != red3.endClimb)
+                        {
+                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            {
+                                red3.endClimb = tbaEnd;
+                                red3.edited = 1;
+                                await Context.SaveChangesAsync();
+
+                            }
+                            else if (red3.endClimb == "Deep" || red3.endClimb == "Shallow")
+                            {
+                                red3.endClimb = "No";
+                                red3.edited = 1;
+                                await Context.SaveChangesAsync();
+                            }
                         }
                     }
                     if (blue1 != null)
@@ -137,8 +173,25 @@ namespace RRScout.Controllers
                             var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1);
                             blue1.mobilitize = correctMobility;
                             blue1.edited = 1;
-                            Context.SaveChangesAsync();
+                            await Context.SaveChangesAsync();
 
+                        }
+                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot1);
+                        if (tbaEnd != blue1.endClimb)
+                        {
+                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            {
+                                blue1.endClimb = tbaEnd;
+                                blue1.edited = 1;
+                                await Context.SaveChangesAsync();
+
+                            }
+                            else if (blue1.endClimb == "Deep" || blue1.endClimb == "Shallow")
+                            {
+                                blue1.endClimb = "No";
+                                blue1.edited = 1;
+                                await Context.SaveChangesAsync();
+                            }
                         }
                     }
                     if (blue2 != null)
@@ -148,8 +201,25 @@ namespace RRScout.Controllers
                             var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2);
                             blue2.mobilitize = correctMobility;
                             blue2.edited = 1;
-                            Context.SaveChangesAsync();
+                            await Context.SaveChangesAsync();
 
+                        }
+                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot2);
+                        if (tbaEnd != blue2.endClimb)
+                        {
+                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            {
+                                blue2.endClimb = tbaEnd;
+                                blue2.edited = 1;
+                                await Context.SaveChangesAsync();
+
+                            }
+                            else if (blue2.endClimb == "Deep" || blue2.endClimb == "Shallow")
+                            {
+                                blue2.endClimb = "No";
+                                blue2.edited = 1;
+                                await Context.SaveChangesAsync();
+                            }
                         }
                     }
                     if (blue3 != null)
@@ -159,10 +229,29 @@ namespace RRScout.Controllers
                             var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot3);
                             blue3.mobilitize = correctMobility;
                             blue3.edited = 1;
-                            Context.SaveChangesAsync();
+                            await Context.SaveChangesAsync();
 
                         }
+                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot3);
+                        if (tbaEnd != blue3.endClimb)
+                        {
+                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            {
+                                blue3.endClimb = tbaEnd;
+                                blue3.edited = 1;
+                                await Context.SaveChangesAsync();
+
+                            }
+                            else if (blue3.endClimb == "Deep" || blue3.endClimb == "Shallow")
+                            {
+                                blue3.endClimb = "No";
+                                blue3.edited = 1;
+                                await Context.SaveChangesAsync();
+                            }
+                        }
                     }
+
+                    //HAVE AI CHANGE FOR EACH CORAL TYPE AND NON-AUTO
 
                     //red
                     if (red1 != null && red2 != null && red3 != null)
@@ -179,7 +268,7 @@ namespace RRScout.Controllers
                     if (blue1 != null && blue2 != null && blue3 != null)
                     {
                         var ourAutoCoralL1 = blue1.autoCoralL1 + blue2.autoCoralL1 + blue3.autoCoralL1;
-                        if (Math.Abs(ourAutoCoralL1 - tbaMatch.score_breakdown.red.autoL1) > autoL1Error)
+                        if (Math.Abs(ourAutoCoralL1 - tbaMatch.score_breakdown.blue.autoL1) > autoL1Error)
                         {
                             AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoCoralL1", ourAutoCoralL1, tbaMatch.score_breakdown.blue.autoL1, blue1.teamNumber, blue2.teamNumber, blue3.teamNumber, tbaMatch.videos[0].key, "Blue");
 
