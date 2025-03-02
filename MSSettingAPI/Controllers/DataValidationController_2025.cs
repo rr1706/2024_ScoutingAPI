@@ -89,8 +89,6 @@ namespace RRScout.Controllers
 
                         }
 
-                        //need to confirm this logic is correct
-                        //Is güt -Orrin
                         var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot1);
                         if (tbaEnd != red1.endClimb)
                         {
@@ -251,28 +249,29 @@ namespace RRScout.Controllers
                         }
                     }
 
-                    //HAVE AI CHANGE FOR EACH CORAL TYPE AND NON-AUTO
-
-                    //red
                     if (red1 != null && red2 != null && red3 != null)
                     {
-                        var ourAutoCoralL1 = red1.autoCoralL1 + red2.autoCoralL1 + red3.autoCoralL1;
-                        if (Math.Abs(ourAutoCoralL1 - tbaMatch.score_breakdown.red.autoL1) > autoL1Error)
-                        {
-                            AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoCoralL1", ourAutoCoralL1, tbaMatch.score_breakdown.red.autoL1, red1.teamNumber, red2.teamNumber, red3.teamNumber, tbaMatch.videos[0].key, "Red");
-
-                        }
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL1", tbaMatch.score_breakdown.red.autoL1, autoL1Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL2", tbaMatch.score_breakdown.red.autoL2, autoL2Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL3", tbaMatch.score_breakdown.red.autoL3, autoL3Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL4", tbaMatch.score_breakdown.red.autoL4, autoL4Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error);
                     }
 
-                    //blue
+                    // Validate blue alliance
                     if (blue1 != null && blue2 != null && blue3 != null)
                     {
-                        var ourAutoCoralL1 = blue1.autoCoralL1 + blue2.autoCoralL1 + blue3.autoCoralL1;
-                        if (Math.Abs(ourAutoCoralL1 - tbaMatch.score_breakdown.blue.autoL1) > autoL1Error)
-                        {
-                            AddToValidatedMatches(validatedMatches, tbaMatch.match_number, "autoCoralL1", ourAutoCoralL1, tbaMatch.score_breakdown.blue.autoL1, blue1.teamNumber, blue2.teamNumber, blue3.teamNumber, tbaMatch.videos[0].key, "Blue");
-
-                        }
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL1", tbaMatch.score_breakdown.blue.autoL1, autoL1Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL2", tbaMatch.score_breakdown.blue.autoL2, autoL2Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL3", tbaMatch.score_breakdown.blue.autoL3, autoL3Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL4", tbaMatch.score_breakdown.blue.autoL4, autoL4Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error);
                     }
                 }
             }
@@ -373,6 +372,42 @@ namespace RRScout.Controllers
             else
             {
                 return "No";
+            }
+        }
+        private static void ValidateCoral(List<ValidatedMatchDTO> validatedMatches, TBAMatch_2025 tbaMatch, MatchData_2025 team1, MatchData_2025 team2, MatchData_2025 team3, string allianceColor, string field, int tbaValue, int errorMargin)
+        {
+            int ourValue = 0;
+            switch (field)
+            {
+                case "autoCoralL1":
+                    ourValue = team1.autoCoralL1 + team2.autoCoralL1 + team3.autoCoralL1;
+                    break;
+                case "autoCoralL2":
+                    ourValue = team1.autoCoralL2 + team2.autoCoralL2 + team3.autoCoralL2;
+                    break;
+                case "autoCoralL3":
+                    ourValue = team1.autoCoralL3 + team2.autoCoralL3 + team3.autoCoralL3;
+                    break;
+                case "autoCoralL4":
+                    ourValue = team1.autoCoralL4 + team2.autoCoralL4 + team3.autoCoralL4;
+                    break;
+                case "teleCoralL1":
+                    ourValue = team1.coralL1 + team2.coralL1 + team3.coralL1;
+                    break;
+                case "teleCoralL2":
+                    ourValue = team1.coralL2 + team2.coralL2 + team3.coralL2;
+                    break;
+                case "teleCoralL3":
+                    ourValue = team1.coralL3 + team2.coralL3 + team3.coralL3;
+                    break;
+                case "teleCoralL4":
+                    ourValue = team1.coralL4 + team2.coralL4 + team3.coralL4;
+                    break;
+            }
+
+            if (Math.Abs(ourValue - tbaValue) > errorMargin)
+            {
+                AddToValidatedMatches(validatedMatches, tbaMatch.match_number, field, ourValue, tbaValue, team1.teamNumber, team2.teamNumber, team3.teamNumber, tbaMatch.videos[0].key, allianceColor);
             }
         }
     }
