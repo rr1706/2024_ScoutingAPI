@@ -102,6 +102,7 @@ namespace RRScout.Controllers
                 newAverage.averageBargeAll += (match.barge + match.autoBarge);
                 newAverage.averageProcessorAll += (match.autoProcessor + match.processor);
                 newAverage.averageTeleCoral += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1);
+                newAverage.averageReefRemoval += (match.autoReefAlgae + match.reefAlgae);
                 newAverage.percentMoblilitize += match.mobilitize;
                 if (match.endClimb == "Deep")
                 {
@@ -146,7 +147,8 @@ namespace RRScout.Controllers
             newAverage.averageTeleCoral = newAverage.averageTeleCoral / newAverage.numMatches;
             newAverage.averageProcessorAll = newAverage.averageProcessorAll / newAverage.numMatches;
             newAverage.averageBargeAll = newAverage.averageBargeAll / newAverage.numMatches;
-            if(newAverage.totalDeepClimb != 0)
+            newAverage.averageReefRemoval = newAverage.averageReefRemoval / newAverage.numMatches; //newAverage.numMatches;
+            if (newAverage.totalDeepClimb != 0)
             {
                 newAverage.successfulDeepClimb = ((newAverage.successfulDeepClimb / newAverage.totalDeepClimb)) * 100;
             }

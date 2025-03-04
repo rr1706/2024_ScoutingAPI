@@ -34,7 +34,8 @@ namespace RRScout.Controllers
         private const int teleL3Error = 1;
         private const int teleL4Error = 1;
         private const int processor = 2;
-        private const int net = 2;
+        private const int barge = 2;
+
 
         private const int teleopSpeakerConst = 3;
 
@@ -249,16 +250,17 @@ namespace RRScout.Controllers
                         }
                     }
 
+                    // Validate red alliance
                     if (red1 != null && red2 != null && red3 != null)
                     {
                         ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL1", tbaMatch.score_breakdown.red.autoL1, autoL1Error);
                         ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL2", tbaMatch.score_breakdown.red.autoL2, autoL2Error);
                         ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL3", tbaMatch.score_breakdown.red.autoL3, autoL3Error);
                         ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL4", tbaMatch.score_breakdown.red.autoL4, autoL4Error);
-                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error);
-                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error);
-                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error);
-                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "teleCoralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error);
+                        ValidateCoral(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error);
                     }
 
                     // Validate blue alliance
@@ -268,10 +270,10 @@ namespace RRScout.Controllers
                         ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL2", tbaMatch.score_breakdown.blue.autoL2, autoL2Error);
                         ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL3", tbaMatch.score_breakdown.blue.autoL3, autoL3Error);
                         ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL4", tbaMatch.score_breakdown.blue.autoL4, autoL4Error);
-                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error);
-                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error);
-                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error);
-                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "teleCoralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error);
+                        ValidateCoral(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error);
                     }
                 }
             }
@@ -391,16 +393,16 @@ namespace RRScout.Controllers
                 case "autoCoralL4":
                     ourValue = team1.autoCoralL4 + team2.autoCoralL4 + team3.autoCoralL4;
                     break;
-                case "teleCoralL1":
+                case "coralL1":
                     ourValue = team1.coralL1 + team2.coralL1 + team3.coralL1;
                     break;
-                case "teleCoralL2":
+                case "coralL2":
                     ourValue = team1.coralL2 + team2.coralL2 + team3.coralL2;
                     break;
-                case "teleCoralL3":
+                case "coralL3":
                     ourValue = team1.coralL3 + team2.coralL3 + team3.coralL3;
                     break;
-                case "teleCoralL4":
+                case "coralL4":
                     ourValue = team1.coralL4 + team2.coralL4 + team3.coralL4;
                     break;
             }

@@ -11,6 +11,7 @@ namespace RRScout.Entities
         public int teamNumber { get; set; }
         public decimal? averageAutoCoral { get; set; } = 0;
         public decimal? averageTeleCoral { get; set; } = 0;
+        public decimal? averageReefRemoval { get; set; } = 0;
         public decimal? averageBargeAll { get; set; } = 0;
         public decimal? averageProcessorAll { get; set; } = 0;
         public decimal? successfulDeepClimb { get; set; } = 0;
