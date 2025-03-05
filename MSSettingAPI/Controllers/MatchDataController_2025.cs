@@ -111,8 +111,9 @@ namespace RRScout.Controllers
                 match.defended = matchData.defended;
                 match.mobilitize = matchData.mobilitize;
                 match.doNotPick = matchData.doNotPick;
+                match.edited = 1;
 
-        Context.SaveChanges();
+                Context.SaveChanges();
         }
         return Ok();
     }
