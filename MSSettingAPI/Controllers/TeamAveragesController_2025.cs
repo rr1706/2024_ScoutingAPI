@@ -24,7 +24,7 @@ namespace RRScout.Controllers
         }
 
         [HttpGet("calculateAverages")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Calculate(string eventID)
         {
             try
@@ -77,7 +77,7 @@ namespace RRScout.Controllers
         }
 
         [HttpGet("getteamaverages")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<TeamAverages_2025>>> GetTeamAverages(string eventID)
         {
             try

@@ -60,8 +60,6 @@ namespace RRScout.Controllers
             var matchData = await Context.SuperScoutData_2025.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
             return Ok(mapper.Map<List<SuperScoutDataDTO_2025>>(matchData));
         }
-
-        //get by team and type?
     }
 
 }

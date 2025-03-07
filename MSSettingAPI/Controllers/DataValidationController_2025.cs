@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RRScout.Entities;
 using RRScout.Helpers;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -47,6 +49,7 @@ namespace RRScout.Controllers
 
       //  GET: api/DataValidation/getTBAFlaggedMatches
        [HttpGet("getTBAFlaggedMatches")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<ValidatedMatchDTO>>> GetTBAFlaggedMatches(string eventID)
         {
 
@@ -56,11 +59,6 @@ namespace RRScout.Controllers
             var TBAMatches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
 
             var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
-
-
-            //correct mobilitize and end game automatically
-
-
 
 
             foreach (var tbaMatch in TBAMatches)
@@ -287,6 +285,7 @@ namespace RRScout.Controllers
         }
         //  GET: api/DataValidation/getTBAFlaggedMatches
         [HttpGet("getPredictionStandings")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<PredictionsDTO>>> getPredictionStandings(string eventID)
         {
 

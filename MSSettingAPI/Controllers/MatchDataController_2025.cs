@@ -26,7 +26,7 @@ namespace RRScout.Controllers
         }
 
         [HttpPost("savedata")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> SaveData(List<MatchDataDTO_2025> matchDTO)
         {
             try
@@ -55,21 +55,21 @@ namespace RRScout.Controllers
         }
 
         [HttpGet("event")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<MatchData_2025>>> Get(string eventID)
         {
             var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
             return Ok(matchData);
         }
         [HttpGet("getbyteam")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<MatchDataDTO_2025>>> GetTeamMatchData(string eventID, int teamNumber)
         {
             var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
             return Ok(mapper.Map<List<MatchDataDTO_2025>>(matchData));
         }
 
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("sendignore/{matchID}/{ignore}")]
         public async Task<ActionResult<List<MatchDataDTO_2025>>> SendIgnore(int matchID, int ignore)
         {
@@ -83,7 +83,7 @@ namespace RRScout.Controllers
         }
     
 
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost("updatematchbymatch")]
     public async Task<ActionResult<List<MatchDataDTO_2025>>> updateMatchByMatch(MatchDataDTO_2025 matchData)
     {
