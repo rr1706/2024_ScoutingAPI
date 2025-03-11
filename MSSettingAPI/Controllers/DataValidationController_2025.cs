@@ -27,7 +27,7 @@ namespace RRScout.Controllers
         private readonly ApplicationDbContext Context;
         private readonly IMapper mapper;
 
-        private const int autoL1Error = 1;
+        private const int autoL1Error = 0;
         private const int autoL2Error = 1;
         private const int autoL3Error = 1;
         private const int autoL4Error = 1;
