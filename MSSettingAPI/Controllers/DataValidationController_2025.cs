@@ -28,9 +28,9 @@ namespace RRScout.Controllers
         private readonly IMapper mapper;
 
         private const int autoL1Error = 0;
-        private const int autoL2Error = 1;
-        private const int autoL3Error = 1;
-        private const int autoL4Error = 1;
+        private const int autoL2Error = 0;
+        private const int autoL3Error = 0;
+        private const int autoL4Error = 0;
         private const int teleL1Error = 1;
         private const int teleL2Error = 1;
         private const int teleL3Error = 1;
@@ -52,240 +52,246 @@ namespace RRScout.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<ValidatedMatchDTO>>> GetTBAFlaggedMatches(string eventID)
         {
-
-            List<ValidatedMatchDTO> validatedMatches = new List<ValidatedMatchDTO>();
-
-            RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
-            var TBAMatches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
-
-            var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
-
-
-            foreach (var tbaMatch in TBAMatches)
+            try
             {
-                if (tbaMatch.score_breakdown != null && tbaMatch.comp_level == "qm")
+                List<ValidatedMatchDTO> validatedMatches = new List<ValidatedMatchDTO>();
+
+                RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
+                var TBAMatches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
+
+                var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
+
+
+                foreach (var tbaMatch in TBAMatches)
                 {
-                    //check if match is in matchData
-
-                    //red
-                    MatchData_2025 red1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[0])).FirstOrDefault();
-                    MatchData_2025 red2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[1])).FirstOrDefault();
-                    MatchData_2025 red3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[2])).FirstOrDefault();
-
-                    //blue
-                    MatchData_2025 blue1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[0])).FirstOrDefault();
-                    MatchData_2025 blue2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[1])).FirstOrDefault();
-                    MatchData_2025 blue3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[2])).FirstOrDefault();
-
-                    if (red1 != null)
+                    if (tbaMatch.score_breakdown != null && tbaMatch.comp_level == "qm")
                     {
-                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1) != red1.mobilitize)
-                        {
-                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1);
-                            red1.mobilitize = correctMobility;
-                            red1.edited = 1;
-                            await Context.SaveChangesAsync();
+                        //check if match is in matchData
 
-                        }
+                        //red
+                        MatchData_2025 red1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[0])).FirstOrDefault();
+                        MatchData_2025 red2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[1])).FirstOrDefault();
+                        MatchData_2025 red3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.red.team_keys[2])).FirstOrDefault();
 
-                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot1);
-                        if (tbaEnd != red1.endClimb)
+                        //blue
+                        MatchData_2025 blue1 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[0])).FirstOrDefault();
+                        MatchData_2025 blue2 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[1])).FirstOrDefault();
+                        MatchData_2025 blue3 = matchData.Where(x => x.matchNumber == tbaMatch.match_number && x.teamNumber == int.Parse(tbaMatch.alliances.blue.team_keys[2])).FirstOrDefault();
+
+                        if (red1 != null)
                         {
-                            if(tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1) != red1.mobilitize)
                             {
-                                red1.endClimb = tbaEnd;
+                                var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot1);
+                                red1.mobilitize = correctMobility;
                                 red1.edited = 1;
                                 await Context.SaveChangesAsync();
 
                             }
-                            else if (red1.endClimb == "Deep" || red1.endClimb == "Shallow")
+
+                            var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot1);
+                            if (tbaEnd != red1.endClimb)
                             {
-                                red1.endClimb = "No";
-                                red1.edited = 1;
-                                await Context.SaveChangesAsync();
+                                if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                                {
+                                    red1.endClimb = tbaEnd;
+                                    red1.edited = 1;
+                                    await Context.SaveChangesAsync();
+
+                                }
+                                else if (red1.endClimb == "Deep" || red1.endClimb == "Shallow")
+                                {
+                                    red1.endClimb = "No";
+                                    red1.edited = 1;
+                                    await Context.SaveChangesAsync();
+                                }
                             }
                         }
-                    }
-                    if (red2 != null)
-                    {
-                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != red2.mobilitize)
+                        if (red2 != null)
                         {
-                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2);
-                            red2.mobilitize = correctMobility;
-                            red2.edited = 1;
-                            await Context.SaveChangesAsync();
-
-                        }
-                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot2);
-                        if (tbaEnd != red2.endClimb)
-                        {
-                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != red2.mobilitize)
                             {
-                                red2.endClimb = tbaEnd;
+                                var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2);
+                                red2.mobilitize = correctMobility;
                                 red2.edited = 1;
                                 await Context.SaveChangesAsync();
 
                             }
-                            else if (red2.endClimb == "Deep" || red2.endClimb == "Shallow")
+                            var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot2);
+                            if (tbaEnd != red2.endClimb)
                             {
-                                red2.endClimb = "No";
-                                red2.edited = 1;
-                                await Context.SaveChangesAsync();
+                                if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                                {
+                                    red2.endClimb = tbaEnd;
+                                    red2.edited = 1;
+                                    await Context.SaveChangesAsync();
+
+                                }
+                                else if (red2.endClimb == "Deep" || red2.endClimb == "Shallow")
+                                {
+                                    red2.endClimb = "No";
+                                    red2.edited = 1;
+                                    await Context.SaveChangesAsync();
+                                }
                             }
-                        }
-
-                    }
-                    if (red3 != null)
-                    {
-                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != red3.mobilitize)
-                        {
-                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot3);
-                            red3.mobilitize = correctMobility;
-                            red3.edited = 1;
-                            await Context.SaveChangesAsync();
 
                         }
-                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot3);
-                        if (tbaEnd != red3.endClimb)
+                        if (red3 != null)
                         {
-                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != red3.mobilitize)
                             {
-                                red3.endClimb = tbaEnd;
+                                var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot3);
+                                red3.mobilitize = correctMobility;
                                 red3.edited = 1;
                                 await Context.SaveChangesAsync();
 
                             }
-                            else if (red3.endClimb == "Deep" || red3.endClimb == "Shallow")
+                            var tbaEnd = convertEndGame(tbaMatch.score_breakdown.red.endGameRobot3);
+                            if (tbaEnd != red3.endClimb)
                             {
-                                red3.endClimb = "No";
-                                red3.edited = 1;
-                                await Context.SaveChangesAsync();
+                                if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                                {
+                                    red3.endClimb = tbaEnd;
+                                    red3.edited = 1;
+                                    await Context.SaveChangesAsync();
+
+                                }
+                                else if (red3.endClimb == "Deep" || red3.endClimb == "Shallow")
+                                {
+                                    red3.endClimb = "No";
+                                    red3.edited = 1;
+                                    await Context.SaveChangesAsync();
+                                }
                             }
                         }
-                    }
-                    if (blue1 != null)
-                    {
-                        if (ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1) != blue1.mobilitize)
+                        if (blue1 != null)
                         {
-                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1);
-                            blue1.mobilitize = correctMobility;
-                            blue1.edited = 1;
-                            await Context.SaveChangesAsync();
-
-                        }
-                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot1);
-                        if (tbaEnd != blue1.endClimb)
-                        {
-                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            if (ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1) != blue1.mobilitize)
                             {
-                                blue1.endClimb = tbaEnd;
+                                var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot1);
+                                blue1.mobilitize = correctMobility;
                                 blue1.edited = 1;
                                 await Context.SaveChangesAsync();
 
                             }
-                            else if (blue1.endClimb == "Deep" || blue1.endClimb == "Shallow")
+                            var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot1);
+                            if (tbaEnd != blue1.endClimb)
                             {
-                                blue1.endClimb = "No";
-                                blue1.edited = 1;
-                                await Context.SaveChangesAsync();
+                                if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                                {
+                                    blue1.endClimb = tbaEnd;
+                                    blue1.edited = 1;
+                                    await Context.SaveChangesAsync();
+
+                                }
+                                else if (blue1.endClimb == "Deep" || blue1.endClimb == "Shallow")
+                                {
+                                    blue1.endClimb = "No";
+                                    blue1.edited = 1;
+                                    await Context.SaveChangesAsync();
+                                }
                             }
                         }
-                    }
-                    if (blue2 != null)
-                    {
-                        if (ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2) != blue2.mobilitize)
+                        if (blue2 != null)
                         {
-                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2);
-                            blue2.mobilitize = correctMobility;
-                            blue2.edited = 1;
-                            await Context.SaveChangesAsync();
-
-                        }
-                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot2);
-                        if (tbaEnd != blue2.endClimb)
-                        {
-                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            if (ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2) != blue2.mobilitize)
                             {
-                                blue2.endClimb = tbaEnd;
+                                var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot2);
+                                blue2.mobilitize = correctMobility;
                                 blue2.edited = 1;
                                 await Context.SaveChangesAsync();
 
                             }
-                            else if (blue2.endClimb == "Deep" || blue2.endClimb == "Shallow")
+                            var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot2);
+                            if (tbaEnd != blue2.endClimb)
                             {
-                                blue2.endClimb = "No";
-                                blue2.edited = 1;
-                                await Context.SaveChangesAsync();
+                                if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                                {
+                                    blue2.endClimb = tbaEnd;
+                                    blue2.edited = 1;
+                                    await Context.SaveChangesAsync();
+
+                                }
+                                else if (blue2.endClimb == "Deep" || blue2.endClimb == "Shallow")
+                                {
+                                    blue2.endClimb = "No";
+                                    blue2.edited = 1;
+                                    await Context.SaveChangesAsync();
+                                }
                             }
                         }
-                    }
-                    if (blue3 != null)
-                    {
-                        if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != blue3.mobilitize)
+                        if (blue3 != null)
                         {
-                            var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot3);
-                            blue3.mobilitize = correctMobility;
-                            blue3.edited = 1;
-                            await Context.SaveChangesAsync();
-
-                        }
-                        var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot3);
-                        if (tbaEnd != blue3.endClimb)
-                        {
-                            if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                            if (ConvertMoblity(tbaMatch.score_breakdown.red.autoLineRobot2) != blue3.mobilitize)
                             {
-                                blue3.endClimb = tbaEnd;
+                                var correctMobility = ConvertMoblity(tbaMatch.score_breakdown.blue.autoLineRobot3);
+                                blue3.mobilitize = correctMobility;
                                 blue3.edited = 1;
                                 await Context.SaveChangesAsync();
 
                             }
-                            else if (blue3.endClimb == "Deep" || blue3.endClimb == "Shallow")
+                            var tbaEnd = convertEndGame(tbaMatch.score_breakdown.blue.endGameRobot3);
+                            if (tbaEnd != blue3.endClimb)
                             {
-                                blue3.endClimb = "No";
-                                blue3.edited = 1;
-                                await Context.SaveChangesAsync();
+                                if (tbaEnd == "Deep" || tbaEnd == "Shallow")
+                                {
+                                    blue3.endClimb = tbaEnd;
+                                    blue3.edited = 1;
+                                    await Context.SaveChangesAsync();
+
+                                }
+                                else if (blue3.endClimb == "Deep" || blue3.endClimb == "Shallow")
+                                {
+                                    blue3.endClimb = "No";
+                                    blue3.edited = 1;
+                                    await Context.SaveChangesAsync();
+                                }
                             }
                         }
-                    }
 
-                    // Validate red alliance
-                    if (red1 != null && red2 != null && red3 != null)
-                    {
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL1", tbaMatch.score_breakdown.red.autoL1, autoL1Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL2", tbaMatch.score_breakdown.red.autoL2, autoL2Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL3", tbaMatch.score_breakdown.red.autoL3, autoL3Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL4", tbaMatch.score_breakdown.red.autoL4, autoL4Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "processor", tbaMatch.score_breakdown.red.wallAlgaeCount, processorError);
-                        validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "net", tbaMatch.score_breakdown.red.netAlgaeCount, netError);
-                    }
+                        // Validate red alliance
+                        if (red1 != null && red2 != null && red3 != null)
+                        {
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL1", tbaMatch.score_breakdown.red.autoL1, autoL1Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL2", tbaMatch.score_breakdown.red.autoL2, autoL2Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL3", tbaMatch.score_breakdown.red.autoL3, autoL3Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL4", tbaMatch.score_breakdown.red.autoL4, autoL4Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "processor", tbaMatch.score_breakdown.red.wallAlgaeCount, processorError);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "net", tbaMatch.score_breakdown.red.netAlgaeCount, netError);
+                        }
 
-                    // Validate blue alliance
-                    if (blue1 != null && blue2 != null && blue3 != null)
-                    {
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL1", tbaMatch.score_breakdown.blue.autoL1, autoL1Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL2", tbaMatch.score_breakdown.blue.autoL2, autoL2Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL3", tbaMatch.score_breakdown.blue.autoL3, autoL3Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL4", tbaMatch.score_breakdown.blue.autoL4, autoL4Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "processor", tbaMatch.score_breakdown.blue.wallAlgaeCount, processorError);
-                        validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "net", tbaMatch.score_breakdown.blue.netAlgaeCount, netError);
+                        // Validate blue alliance
+                        if (blue1 != null && blue2 != null && blue3 != null)
+                        {
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL1", tbaMatch.score_breakdown.blue.autoL1, autoL1Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL2", tbaMatch.score_breakdown.blue.autoL2, autoL2Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL3", tbaMatch.score_breakdown.blue.autoL3, autoL3Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL4", tbaMatch.score_breakdown.blue.autoL4, autoL4Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "processor", tbaMatch.score_breakdown.blue.wallAlgaeCount, processorError);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "net", tbaMatch.score_breakdown.blue.netAlgaeCount, netError);
+                        }
                     }
                 }
+                validatedMatches = validatedMatches.OrderBy(x => x.matchNumber).ToList();
+                return Ok(validatedMatches);
             }
-            validatedMatches = validatedMatches.OrderBy(x => x.matchNumber).ToList();
-            return Ok(validatedMatches);
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
 
         }
         //  GET: api/DataValidation/getTBAFlaggedMatches
         [HttpGet("getPredictionStandings")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<PredictionsDTO>>> getPredictionStandings(string eventID)
         {
 
@@ -314,32 +320,34 @@ namespace RRScout.Controllers
             {
                 var TBAMatch = TBAMatches.Where(x => x.match_number == ourMatch.matchNumber && x.comp_level == "qm").FirstOrDefault();
 
-                if (ourMatch.gambleColor == TBAMatch.winning_alliance)
+                if (TBAMatch is not null)
                 {
-                    foreach (var scout in results)
+                    if (ourMatch.gambleColor == TBAMatch.winning_alliance)
                     {
-                        if (scout.scoutName == ourMatch.scoutName)
+                        foreach (var scout in results)
                         {
-                            scout.score = scout.score + ourMatch.gambleAmount;
-                            scout.numberMatches = scout.numberMatches + 1;
+                            if (scout.scoutName == ourMatch.scoutName)
+                            {
+                                scout.score = scout.score + ourMatch.gambleAmount;
+                                scout.numberMatches = scout.numberMatches + 1;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    foreach (var scout in results)
+                    else
                     {
-                        if (scout.scoutName == ourMatch.scoutName)
+                        foreach (var scout in results)
                         {
-                            scout.score = scout.score - ourMatch.gambleAmount;
-                            scout.numberMatches = scout.numberMatches + 1;
+                            if (scout.scoutName == ourMatch.scoutName)
+                            {
+                                scout.score = scout.score - ourMatch.gambleAmount;
+                                scout.numberMatches = scout.numberMatches + 1;
+                            }
                         }
                     }
                 }
             }
             results = results.OrderByDescending(x => x.numberMatches).OrderByDescending(x => x.score).ToList();
             return Ok(results);
-
         }
         private static void AddToValidatedMatches(List<ValidatedMatchDTO> validatedMatches, int matchNumber, string field, int currentValue, int correctValue, int team1, int team2, int team3, string matchVideo, string allianceColor)
         {
@@ -418,7 +426,10 @@ namespace RRScout.Controllers
 
             if (Math.Abs(ourValue - tbaValue) > errorMargin)
             {
-                AddToValidatedMatches(validatedMatches, tbaMatch.match_number, field, ourValue, tbaValue, team1.teamNumber, team2.teamNumber, team3.teamNumber, tbaMatch.videos[0].key, allianceColor);
+                if (tbaMatch.videos.Count > 0)
+                {
+                    AddToValidatedMatches(validatedMatches, tbaMatch.match_number, field, ourValue, tbaValue, team1.teamNumber, team2.teamNumber, team3.teamNumber, tbaMatch.videos[0].key, allianceColor);
+                }
             }
         }
     }
