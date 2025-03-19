@@ -16,6 +16,7 @@ namespace RRScout.DTOs
         public string drivetrain { get; set; }
         public int batteryCount { get; set; }
         public string batteryAge { get; set; }
+        public string driverExperience { get; set; }
 
     }
 }

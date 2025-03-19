@@ -116,9 +116,9 @@ namespace RRScout.Controllers
                 }
                 if (match.endClimb == "Fail")
                 {
+                    //This is the Speghetti w/ paint over the hole
                     newAverage.totalDeepClimb += 1;
                     newAverage.totalShallowClimb += 1;
-                    //This is the Speghetti w/ paint over the hole
                 }
                 newAverage.totalPoints += ((match.autoProcessor + match.processor) * 2) + ((match.barge + match.autoBarge) * 4) + (match.autoCoralL4 * 7) + (match.autoCoralL3 * 6) + (match.autoCoralL2 * 4) + (match.autoCoralL1 * 3) + (match.coralL4 * 5) + (match.coralL3 * 4) + (match.coralL2 * 3) + (match.coralL1 * 2) + (match.mobilitize * 3);
                 if (match.endClimb == "Deep")

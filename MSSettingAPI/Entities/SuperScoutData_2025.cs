@@ -15,7 +15,7 @@ public class SuperScoutData_2025
     public int batteryCount { get; set; }
     public string batteryAge { get; set; } 
 
-
+    public string driverExperience { get; set; }
 
 }
 
