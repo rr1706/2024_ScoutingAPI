@@ -252,31 +252,31 @@ namespace RRScout.Controllers
                         // Validate red alliance
                         if (red1 != null && red2 != null && red3 != null)
                         {
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL1", tbaMatch.score_breakdown.red.autoL1, autoL1Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL2", tbaMatch.score_breakdown.red.autoL2, autoL2Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL3", tbaMatch.score_breakdown.red.autoL3, autoL3Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL4", tbaMatch.score_breakdown.red.autoL4, autoL4Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "processor", tbaMatch.score_breakdown.red.wallAlgaeCount, processorError);
-                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "net", tbaMatch.score_breakdown.red.netAlgaeCount, netError);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL1", tbaMatch.score_breakdown.red.autoL1, autoL1Error,0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL2", tbaMatch.score_breakdown.red.autoL2, autoL2Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL3", tbaMatch.score_breakdown.red.autoL3, autoL3Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "autoCoralL4", tbaMatch.score_breakdown.red.autoL4, autoL4Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL1", tbaMatch.score_breakdown.red.teleL1, teleL1Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL2", tbaMatch.score_breakdown.red.teleL2, teleL2Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL3", tbaMatch.score_breakdown.red.teleL3, teleL3Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "coralL4", tbaMatch.score_breakdown.red.teleL4, teleL4Error, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "processor", tbaMatch.score_breakdown.red.wallAlgaeCount, processorError, 0);
+                            validateField(validatedMatches, tbaMatch, red1, red2, red3, "Red", "net", tbaMatch.score_breakdown.red.netAlgaeCount, netError, tbaMatch.score_breakdown.blue.wallAlgaeCount);
                         }
 
                         // Validate blue alliance
                         if (blue1 != null && blue2 != null && blue3 != null)
                         {
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL1", tbaMatch.score_breakdown.blue.autoL1, autoL1Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL2", tbaMatch.score_breakdown.blue.autoL2, autoL2Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL3", tbaMatch.score_breakdown.blue.autoL3, autoL3Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL4", tbaMatch.score_breakdown.blue.autoL4, autoL4Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "processor", tbaMatch.score_breakdown.blue.wallAlgaeCount, processorError);
-                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "net", tbaMatch.score_breakdown.blue.netAlgaeCount, netError);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL1", tbaMatch.score_breakdown.blue.autoL1, autoL1Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL2", tbaMatch.score_breakdown.blue.autoL2, autoL2Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL3", tbaMatch.score_breakdown.blue.autoL3, autoL3Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "autoCoralL4", tbaMatch.score_breakdown.blue.autoL4, autoL4Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL1", tbaMatch.score_breakdown.blue.teleL1, teleL1Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL2", tbaMatch.score_breakdown.blue.teleL2, teleL2Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL3", tbaMatch.score_breakdown.blue.teleL3, teleL3Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "coralL4", tbaMatch.score_breakdown.blue.teleL4, teleL4Error, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "processor", tbaMatch.score_breakdown.blue.wallAlgaeCount, processorError, 0);
+                            validateField(validatedMatches, tbaMatch, blue1, blue2, blue3, "Blue", "net", tbaMatch.score_breakdown.blue.netAlgaeCount, netError, tbaMatch.score_breakdown.red.wallAlgaeCount);
                         }
                     }
                 }
@@ -289,7 +289,6 @@ namespace RRScout.Controllers
             }
 
         }
-        //  GET: api/DataValidation/getTBAFlaggedMatches
         [HttpGet("getPredictionStandings")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<PredictionsDTO>>> getPredictionStandings(string eventID)
@@ -387,7 +386,7 @@ namespace RRScout.Controllers
                 return "No";
             }
         }
-        private static void validateField(List<ValidatedMatchDTO> validatedMatches, TBAMatch_2025 tbaMatch, MatchData_2025 team1, MatchData_2025 team2, MatchData_2025 team3, string allianceColor, string field, int tbaValue, int errorMargin)
+        private static void validateField(List<ValidatedMatchDTO> validatedMatches, TBAMatch_2025 tbaMatch, MatchData_2025 team1, MatchData_2025 team2, MatchData_2025 team3, string allianceColor, string field, int tbaValue, int errorMargin, int opponentTBAValue)
         {
             int ourValue = 0;
             switch (field)
@@ -421,6 +420,7 @@ namespace RRScout.Controllers
                     break;
                 case "net":
                     ourValue = team1.autoBarge + team2.autoBarge + team3.autoBarge + team1.barge + team2.barge + team3.barge;
+                    tbaValue = tbaValue - opponentTBAValue;
                     break;
             }
 

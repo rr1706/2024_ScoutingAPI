@@ -94,15 +94,40 @@ namespace RRScout.Controllers
 
         private static void AddMatch(TeamAverages_2025 newAverage, MatchData_2025 match)
         {
-
             if (match.ignore == 0)
             {
                 newAverage.numMatches += 1;
-                newAverage.averageAutoCoral += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
-                newAverage.averageBargeAll += (match.barge + match.autoBarge);
-                newAverage.averageProcessorAll += (match.autoProcessor + match.processor);
-                newAverage.averageTeleCoral += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1);
-                newAverage.averageReefRemoval += (match.autoReefAlgae + match.reefAlgae);
+                if (match.autoPosition == "Middle")
+                {
+                    newAverage.middleAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
+                    newAverage.middleAutoCount += 1;
+                }else if (match.autoPosition == "Side")
+                {
+                    newAverage.sideAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
+                    newAverage.sideAutoCount += 1;
+                }
+                newAverage.averageAutoCoral += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);         
+
+                if (match.defence == 0)
+                {
+                    newAverage.averageProcessorAll += (match.autoProcessor + match.processor);
+                    newAverage.averageBargeAll += (match.barge + match.autoBarge);
+                    newAverage.averageTeleCoral += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1);
+                    newAverage.averageReefRemoval += (match.autoReefAlgae + match.reefAlgae);
+                    newAverage.offensiveCount += 1;
+
+                    if (match.defended == 0)
+                    {
+                        newAverage.unDefendedScored += match.autoProcessor + match.processor + match.barge + match.autoBarge + match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1;
+                        newAverage.unDefendedCount += 1;
+                    }
+                    else
+                    {
+                        newAverage.defendedScored += match.autoProcessor + match.processor + match.barge + match.autoBarge + match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1;
+                        newAverage.defendedCount += 1;
+                    }
+                }
+
                 newAverage.percentMoblilitize += match.mobilitize;
                 if (match.endClimb == "Deep")
                 {
@@ -143,11 +168,37 @@ namespace RRScout.Controllers
             decimal tempD = newAverage.successfulDeepClimb ?? 0;
             decimal tempS = newAverage.successfulShallowClimb ?? 0;
             //End of Speget
+            if (newAverage.sideAutoCount != 0)
+            {
+                newAverage.sideAuto = newAverage.sideAuto / newAverage.sideAutoCount;
+            }
+            if (newAverage.middleAutoCount != 0)
+            {
+                newAverage.middleAuto = newAverage.middleAuto / newAverage.middleAutoCount;
+            }
+            
             newAverage.averageAutoCoral = newAverage.averageAutoCoral / newAverage.numMatches;
-            newAverage.averageTeleCoral = newAverage.averageTeleCoral / newAverage.numMatches;
-            newAverage.averageProcessorAll = newAverage.averageProcessorAll / newAverage.numMatches;
-            newAverage.averageBargeAll = newAverage.averageBargeAll / newAverage.numMatches;
-            newAverage.averageReefRemoval = newAverage.averageReefRemoval / newAverage.numMatches; //newAverage.numMatches;
+
+            if (newAverage.offensiveCount != 0)
+            {
+                newAverage.averageTeleCoral = newAverage.averageTeleCoral / newAverage.offensiveCount;
+                newAverage.averageProcessorAll = newAverage.averageProcessorAll / newAverage.offensiveCount;
+                newAverage.averageBargeAll = newAverage.averageBargeAll / newAverage.offensiveCount;
+                newAverage.averageReefRemoval = newAverage.averageReefRemoval / newAverage.offensiveCount;
+            }
+
+
+
+            if (newAverage.defendedCount != 0)
+            {
+                newAverage.defendedScored = newAverage.defendedScored / newAverage.defendedCount;
+            }
+            if (newAverage.unDefendedCount != 0)
+            {
+                newAverage.unDefendedScored = newAverage.unDefendedScored / newAverage.unDefendedCount;
+            }
+            
+
             if (newAverage.totalDeepClimb != 0)
             {
                 newAverage.successfulDeepClimb = ((newAverage.successfulDeepClimb / newAverage.totalDeepClimb)) * 100;

@@ -112,7 +112,7 @@ namespace RRScout.Controllers
             try
             {
                 RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
-                var matches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
+                var matches = await TBAHelper.getAllMatches(selectedEvent.tbaCode);
 
                 if (matches == null || !matches.Any())
                 {

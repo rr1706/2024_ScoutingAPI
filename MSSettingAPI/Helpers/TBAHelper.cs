@@ -30,6 +30,33 @@ namespace RRScout.Helpers
 
             return TBAMatches;
         }
+        public static async Task<List<TBAMatch_2025>> getAllMatches(string eventID)
+        {
+            var httpClient = new HttpClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://www.thebluealliance.com/api/v3/event/" + eventID + "/matches");
+            request.Headers.Add("X-TBA-Auth-Key", "e6O1xGxIT7zsDwNUM1gAb7cNsH71EZ4JhyyvAkBwiw1qDRcEvhsW8CBUCkXxCVA8");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<TBAMatch_2025>();
+            }
+
+            var TBAMatches = JsonSerializer.Deserialize<List<TBAMatch_2025>>(await response.Content.ReadAsStringAsync());
+
+            foreach (var match in TBAMatches)
+            {
+                match.alliances.red.team_keys[0] = match.alliances.red.team_keys[0].Substring(3);
+                match.alliances.red.team_keys[1] = match.alliances.red.team_keys[1].Substring(3);
+                match.alliances.red.team_keys[2] = match.alliances.red.team_keys[2].Substring(3);
+                match.alliances.blue.team_keys[0] = match.alliances.blue.team_keys[0].Substring(3);
+                match.alliances.blue.team_keys[1] = match.alliances.blue.team_keys[1].Substring(3);
+                match.alliances.blue.team_keys[2] = match.alliances.blue.team_keys[2].Substring(3);
+            }
+
+            return TBAMatches;
+        }
         public static async Task<List<EventData>> getAllEvents()
         {
             var httpClient = new HttpClient();
@@ -78,10 +105,10 @@ namespace RRScout.Helpers
                     match.score_breakdown.blue.autoL4 = getNumberCoralScored(match.score_breakdown.blue.autoReef.topRow);
 
                     match.score_breakdown.blue.teleL1 = match.score_breakdown.blue.teleopReef.trough;
-                    match.score_breakdown.blue.teleL2 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.botRow)- match.score_breakdown.blue.autoL2;
-                    match.score_breakdown.blue.teleL3 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.midRow)- match.score_breakdown.blue.autoL3;
+                    match.score_breakdown.blue.teleL2 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.botRow) - match.score_breakdown.blue.autoL2;
+                    match.score_breakdown.blue.teleL3 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.midRow) - match.score_breakdown.blue.autoL3;
                     match.score_breakdown.blue.teleL4 = getNumberCoralScored(match.score_breakdown.blue.teleopReef.topRow) - match.score_breakdown.blue.autoL4;
-                }
+            }
             }
         }
         public static int getNumberCoralScored(Row row)
