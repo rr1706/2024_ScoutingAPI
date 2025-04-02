@@ -31,6 +31,6 @@ namespace RRScout.Entities
         public decimal? unDefendedScored { get; set; } = 0;
         public int? defendedCount { get; set; } = 0;
         public int? unDefendedCount { get; set; } = 0;
-
+        public decimal? totalTeleScore { get; set; } = 0;
     }
 }

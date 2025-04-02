@@ -106,7 +106,9 @@ namespace RRScout.Controllers
                     newAverage.sideAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
                     newAverage.sideAutoCount += 1;
                 }
-                newAverage.averageAutoCoral += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);         
+                newAverage.averageAutoCoral += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
+
+                
 
                 if (match.defence == 0)
                 {
@@ -115,6 +117,7 @@ namespace RRScout.Controllers
                     newAverage.averageTeleCoral += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1);
                     newAverage.averageReefRemoval += (match.autoReefAlgae + match.reefAlgae);
                     newAverage.offensiveCount += 1;
+                    newAverage.totalTeleScore += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1 + match.processor + match.barge);
 
                     if (match.defended == 0)
                     {
@@ -187,7 +190,10 @@ namespace RRScout.Controllers
                 newAverage.averageReefRemoval = newAverage.averageReefRemoval / newAverage.offensiveCount;
             }
 
-
+            if(newAverage.totalTeleScore != 0)
+            {
+                newAverage.totalTeleScore = newAverage.totalTeleScore / newAverage.offensiveCount;
+            }
 
             if (newAverage.defendedCount != 0)
             {
