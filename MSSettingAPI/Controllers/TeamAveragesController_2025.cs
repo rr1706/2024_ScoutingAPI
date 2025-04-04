@@ -99,11 +99,12 @@ namespace RRScout.Controllers
                 newAverage.numMatches += 1;
                 if (match.autoPosition == "Middle")
                 {
-                    newAverage.middleAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
+                    newAverage.middleCoralAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
                     newAverage.middleAutoCount += 1;
+                    newAverage.middleNetAuto += (match.autoBarge);
                 }else if (match.autoPosition == "Side")
                 {
-                    newAverage.sideAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
+                    newAverage.sideCoralAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
                     newAverage.sideAutoCount += 1;
                 }
                 newAverage.averageAutoCoral += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
@@ -173,12 +174,14 @@ namespace RRScout.Controllers
             //End of Speget
             if (newAverage.sideAutoCount != 0)
             {
-                newAverage.sideAuto = newAverage.sideAuto / newAverage.sideAutoCount;
+                newAverage.sideCoralAuto = newAverage.sideCoralAuto / newAverage.sideAutoCount;
             }
             if (newAverage.middleAutoCount != 0)
             {
-                newAverage.middleAuto = newAverage.middleAuto / newAverage.middleAutoCount;
+                newAverage.middleCoralAuto = newAverage.middleCoralAuto / newAverage.middleAutoCount;
+                newAverage.middleNetAuto = newAverage.middleNetAuto / newAverage.middleAutoCount;
             }
+
             
             newAverage.averageAutoCoral = newAverage.averageAutoCoral / newAverage.numMatches;
 

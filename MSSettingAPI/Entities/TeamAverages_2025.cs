@@ -22,8 +22,9 @@ namespace RRScout.Entities
         public decimal? totalPoints { get; set; } = 0;
         public int? numMatches { get; set; } = 0;
         public int? doNotPick { get; set; } = 0;
-        public decimal? sideAuto { get; set; } = 0;
-        public decimal? middleAuto { get; set; } = 0;
+        public decimal? sideCoralAuto { get; set; } = 0;
+        public decimal? middleCoralAuto { get; set; } = 0;
+        public decimal? middleNetAuto { get; set; } = 0;
         public int? sideAutoCount { get; set; } = 0;
         public int? middleAutoCount { get; set; } = 0;
         public int? offensiveCount { get; set; } = 0;

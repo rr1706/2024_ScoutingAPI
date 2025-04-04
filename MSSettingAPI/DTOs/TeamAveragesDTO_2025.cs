@@ -21,8 +21,9 @@ namespace RRScout.DTOs
         public decimal? totalPoints { get; set; } = 0;
         public int? numMatches { get; set; } = 0;
         public int? doNotPick { set; get; } = 0;
-        public decimal? sideAuto { get; set; } = 0;
-        public decimal? middleAuto { get; set; } = 0;
+        public decimal? sideCoralAuto { get; set; } = 0;
+        public decimal? middleCoralAuto { get; set; } = 0;
+        public decimal? middleNetAuto { get; set; } = 0;
         public int? sideAutoCount { get; set; } = 0;
         public int? middleAutoCount { get; set; } = 0;
         public int? offensiveCount { get; set; } = 0;
