@@ -112,6 +112,7 @@ namespace RRScout.Controllers
                 match.mobilitize = matchData.mobilitize;
                 match.doNotPick = matchData.doNotPick;
                 match.edited = 1;
+                match.validatedClimb = matchData.validatedClimb;
 
                 Context.SaveChanges();
         }

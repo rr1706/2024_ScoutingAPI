@@ -55,5 +55,6 @@ namespace RRScout.Entities
         public int doNotPick { get; set; }
         public int? edited { get; set; }
         public string? autoPosition { get; set; }
+        public int? validatedClimb { get; set; }
     }
 }

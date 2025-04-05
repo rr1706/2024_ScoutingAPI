@@ -52,7 +52,28 @@ namespace RRScout.Controllers
             return Ok(TBAMatches);
 
         }
-        
+
+        [HttpGet("getMatchVideos")]
+        public async Task<ActionResult<List<TBAMatch_2025>>> getMatchVideos(string eventID)
+        {
+            RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
+            var TBAMatches = await TBAHelper.getMatchData(selectedEvent.tbaCode);
+
+            List<MatchVideoDTO> videos = new List<MatchVideoDTO>();
+
+            foreach (var match in TBAMatches)
+            {
+                if (match.videos.Count > 0 && match.comp_level == "qm")
+                {
+                    MatchVideoDTO newVideo = new MatchVideoDTO();
+                    newVideo.matchNumber = match.match_number;
+                    newVideo.video = match.videos[0].key;
+                    videos.Add(newVideo);
+                }
+            }
+            return Ok(videos);
+        }
+
     }
 
 }
