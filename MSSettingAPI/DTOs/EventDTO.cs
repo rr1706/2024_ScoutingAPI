@@ -14,4 +14,14 @@ namespace RRScout.DTOs
 
         public string? tbaCode { get; set; }
     }
+
+    public class TeamNames
+    {
+        [Key]
+        [Required]
+        public int id { get; set; }
+        public string teamName { get; set; }
+        public string eventCode { get; set; }
+        public int teamNumber { get; set; }
+    }
 }

@@ -69,6 +69,18 @@ namespace RRScout.Controllers
             return Ok(teamList.OrderBy(x => x));
         }
 
+        [HttpGet("getteamname")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<string>> getTeamName(string eventID, int teamNum)
+        {
+            var teamName = await Context.TeamNames.Where(x => x.eventCode == eventID && x.teamNumber == teamNum).Select(x => x.teamName).SingleOrDefaultAsync();
+            if(teamName != null)
+            {
+                return Ok(teamName);
+            }
+            return "";
+        }
+
         [HttpPost("saveschedule")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> SaveSchedule(List<MatchScheduleDTO> scheduleDTO)

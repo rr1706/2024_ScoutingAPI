@@ -33,5 +33,6 @@ namespace RRScout
         public DbSet<MatchData_2025> MatchData_2025 { get; set; }
 
         public DbSet<SuperScoutData_2025> SuperScoutData_2025 { get; set; }
+        public DbSet<TeamNames> TeamNames { get; set; }
     }
 }
