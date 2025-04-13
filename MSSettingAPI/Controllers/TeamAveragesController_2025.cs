@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -119,6 +120,7 @@ namespace RRScout.Controllers
                     newAverage.averageReefRemoval += (match.autoReefAlgae + match.reefAlgae);
                     newAverage.offensiveCount += 1;
                     newAverage.totalTeleScore += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1 + match.processor + match.barge);
+                    newAverage.totalTeleAdjusted += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1 + (match.processor * 1.75m) + (match.barge * 1.75m));
 
                     if (match.defended == 0)
                     {
@@ -196,6 +198,7 @@ namespace RRScout.Controllers
             if(newAverage.totalTeleScore != 0)
             {
                 newAverage.totalTeleScore = newAverage.totalTeleScore / newAverage.offensiveCount;
+                newAverage.totalTeleAdjusted = newAverage.totalTeleAdjusted / newAverage.offensiveCount;
             }
 
             if (newAverage.defendedCount != 0)

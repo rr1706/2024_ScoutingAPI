@@ -33,5 +33,6 @@ namespace RRScout.Entities
         public int? defendedCount { get; set; } = 0;
         public int? unDefendedCount { get; set; } = 0;
         public decimal? totalTeleScore { get; set; } = 0;
+        public decimal? totalTeleAdjusted { get; set; } = 0;
     }
 }
