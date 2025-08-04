@@ -1,4 +1,9 @@
-﻿using System.Text.Json;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using RRScout.DTOs;
+using RRScout.Entities;
+using System.Collections.Generic;
+using System.Text.Json;
 
 
 namespace RRScout.Helpers
@@ -29,6 +34,31 @@ namespace RRScout.Helpers
             }
 
             return TBAMatches;
+        }
+        public static async Task<List<TeamInfo>> loadTeamNames(string eventID)
+        {
+            var httpClient = new HttpClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://www.thebluealliance.com/api/v3/event/" + eventID + "/teams/simple");
+            request.Headers.Add("X-TBA-Auth-Key", "e6O1xGxIT7zsDwNUM1gAb7cNsH71EZ4JhyyvAkBwiw1qDRcEvhsW8CBUCkXxCVA8");
+
+            var response = await httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<TeamInfo>();
+            }
+
+            var TBATeamInfo = JsonSerializer.Deserialize<List<TeamInfo>>(await response.Content.ReadAsStringAsync());
+
+
+            foreach (TeamInfo team in TBATeamInfo)
+            {   
+                team.eventCode = eventID;
+            }
+
+            
+            return TBATeamInfo;
+
         }
         public static async Task<List<TBAMatch_2025>> getAllMatches(string eventID)
         {

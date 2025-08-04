@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RRScout.DTOs;
 using RRScout.Entities;
+using TeamNames = RRScout.Entities.TeamNames;
 
 namespace RRScout.Helpers
 {
@@ -20,6 +21,11 @@ namespace RRScout.Helpers
             CreateMap<Event, EventDTO>().ReverseMap();
             CreateMap<MatchSchedule, MatchScheduleDTO>().ReverseMap();
             CreateMap<SuperScoutData_2025, SuperScoutDataDTO_2025>().ReverseMap();
+
+            CreateMap<TeamNames, TeamInfo>()
+                .ForMember(dest => dest.eventCode, opt => opt.MapFrom(src => src.eventCode))
+                .ForMember(dest => dest.team_number, opt => opt.MapFrom(src => src.teamNumber))
+                .ForMember(dest => dest.nickname, opt => opt.MapFrom(src => src.teamName));
         }
 
     }

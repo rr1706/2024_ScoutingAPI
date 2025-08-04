@@ -15,6 +15,12 @@ public class TBAMatch_2025
     public string winning_alliance { get; set; }
 }
 
+public class TeamInfo
+{
+    public string nickname { get; set; }
+    public int team_number { get; set; }
+    public string eventCode { get; set; }
+}
 public class Alliances
 {
     public Alliance blue { get; set; }

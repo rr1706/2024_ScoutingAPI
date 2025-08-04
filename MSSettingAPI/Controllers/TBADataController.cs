@@ -11,6 +11,7 @@ using RRScout.DTOs;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RRScout.Entities;
 using RRScout.Helpers;
+using TeamNames = RRScout.Entities.TeamNames;
 
 
 
@@ -33,7 +34,7 @@ namespace RRScout.Controllers
             this.mapper = mapper;
         }
 
-       [HttpGet("getAllMatches")]
+        [HttpGet("getAllMatches")]
         public async Task<ActionResult<List<TBAMatch_2025>>> GetAllMatches()
         {
             var events = await TBAHelper.getAllEvents();
@@ -45,7 +46,7 @@ namespace RRScout.Controllers
             {
                 if (DateTime.TryParse(comp.start_date, out DateTime startDate) && startDate < DateTime.Now)
                 {
-                    TBAMatches.AddRange(await TBAHelper.getMatchData("2025"+comp.event_code));
+                    TBAMatches.AddRange(await TBAHelper.getMatchData("2025" + comp.event_code));
                 }
             }
 
@@ -74,6 +75,42 @@ namespace RRScout.Controllers
             return Ok(videos);
         }
 
+        [HttpGet("getTeamNames")]
+        public async Task<ActionResult> getTeamNames(string eventID)
+        {
+
+            
+            try
+            {
+                RRScout.Entities.Event selectedEvent = await Context.Events.Where(x => x.eventCode == eventID).FirstOrDefaultAsync();
+
+                var teamNames = await TBAHelper.loadTeamNames(selectedEvent.tbaCode);
+                var newTeamNames = new List<TeamNames>();
+                var tableToBeCleared = await Context.TeamNames.Where(x => x.eventCode == selectedEvent.tbaCode).ToListAsync();
+                Context.TeamNames.RemoveRange(tableToBeCleared);
+
+                foreach (var teamInfo in teamNames)
+                {
+                    var newTeam = new TeamNames();
+                    newTeam.teamNumber = teamInfo.team_number;
+                    newTeam.teamName = teamInfo.nickname;
+                    newTeam.eventCode = teamInfo.eventCode;
+                    newTeamNames.Add(newTeam);
+                }
+
+                await Context.TeamNames.AddRangeAsync(newTeamNames);
+                await Context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+            
+        }
+
     }
 
-}
+
