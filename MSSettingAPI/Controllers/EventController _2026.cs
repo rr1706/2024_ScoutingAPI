@@ -13,13 +13,13 @@ using System.Globalization;
 
 namespace RRScout.Controllers
 {
-    [Route("api/event2025")]
+    [Route("api/event2026")]
     [ApiController]
-    public class Event2025 : ControllerBase
+    public class Event2026 : ControllerBase
     {
         private readonly ApplicationDbContext Context;
         private readonly IMapper mapper;
-        public Event2025(ApplicationDbContext context, IMapper mapper)
+        public Event2026(ApplicationDbContext context, IMapper mapper)
         {
             this.Context = context;
             this.mapper = mapper;

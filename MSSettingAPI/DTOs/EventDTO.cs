@@ -13,6 +13,8 @@ namespace RRScout.DTOs
         public int year { get; set; }
 
         public string? tbaCode { get; set; }
+
+        public string? folderID { get; set; }
     }
 
     public class TeamNames

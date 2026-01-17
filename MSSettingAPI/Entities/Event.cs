@@ -14,6 +14,8 @@ namespace RRScout.Entities
 
         public string? tbaCode { get; set; }
 
+        public string? folderID { get; set; }
+
 
     }
 

@@ -13,13 +13,13 @@ using System.Globalization;
 
 namespace RRScout.Controllers
 {
-    [Route("api/matchdata2025")]
+    [Route("api/matchdata2026")]
     [ApiController]
-    public class MatchData2025 : ControllerBase
+    public class MatchData2026 : ControllerBase
     {
         private readonly ApplicationDbContext Context;
         private readonly IMapper mapper;
-        public MatchData2025(ApplicationDbContext context, IMapper mapper)
+        public MatchData2026(ApplicationDbContext context, IMapper mapper)
         {
             this.Context = context;
             this.mapper = mapper;
@@ -58,7 +58,7 @@ namespace RRScout.Controllers
 
         [HttpGet("event")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<MatchData_2025>>> Get(string eventID)
+        public async Task<ActionResult<List<MatchData_2025>>> Getfg(string eventID)
         {
             var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
             return Ok(matchData);
