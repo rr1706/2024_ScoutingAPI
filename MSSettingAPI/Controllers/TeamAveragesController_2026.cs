@@ -30,11 +30,11 @@ namespace RRScout.Controllers
         {
             try
             {
-                var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).OrderBy(x => x.teamNumber).ToListAsync();
+                var matchData = await Context.MatchData_2026.Where(x => x.eventCode == eventID).OrderBy(x => x.teamNumber).ToListAsync();
 
-                var newAverages = new List<TeamAverages_2025>();
+                var newAverages = new List<TeamAverages_2026>();
                 int currentTeam = 0;
-                TeamAverages_2025 newAverage = new TeamAverages_2025();
+                TeamAverages_2026 newAverage = new TeamAverages_2026();
 
                 foreach (var match in matchData)
                 {
@@ -44,7 +44,7 @@ namespace RRScout.Controllers
                         {
                             CalculateAverages(newAverage);
                             newAverages.Add(newAverage);
-                            newAverage = new TeamAverages_2025();
+                            newAverage = new TeamAverages_2026();
                         }
                         newAverage.teamNumber = match.teamNumber;
                         newAverage.eventCode = match.eventCode;
@@ -60,10 +60,10 @@ namespace RRScout.Controllers
                 CalculateAverages(newAverage);
                 newAverages.Add(newAverage);
 
-                var oldAverages = await Context.TeamAverages_2025.Where(x => x.eventCode == eventID).ToListAsync();
-                Context.TeamAverages_2025.RemoveRange(oldAverages);
+                var oldAverages = await Context.TeamAverages_2026.Where(x => x.eventCode == eventID).ToListAsync();
+                Context.TeamAverages_2026.RemoveRange(oldAverages);
 
-                Context.TeamAverages_2025.AddRange(newAverages);
+                Context.TeamAverages_2026.AddRange(newAverages);
 
                 Context.SaveChanges();
 
@@ -79,11 +79,11 @@ namespace RRScout.Controllers
 
         [HttpGet("getteamaverages")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<TeamAverages_2025>>> GetTeamAverages(string eventID)
+        public async Task<ActionResult<List<TeamAverages_2026>>> GetTeamAverages(string eventID)
         {
             try
             {
-                var teamAverages = await Context.TeamAverages_2025.Where(x => x.eventCode == eventID).ToListAsync();
+                var teamAverages = await Context.TeamAverages_2026.Where(x => x.eventCode == eventID).ToListAsync();
                 return Ok(teamAverages);
             }
             catch (Exception ex)
@@ -93,138 +93,120 @@ namespace RRScout.Controllers
         }
 
 
-        private static void AddMatch(TeamAverages_2025 newAverage, MatchData_2025 match)
+        private static void AddMatch(TeamAverages_2026 newAverage, MatchData_2026 match)
         {
-            if (match.ignore == 0)
+            if (match.ignore!)
             {
                 newAverage.numMatches += 1;
-                if (match.autoPosition == "Middle")
-                {
-                    newAverage.middleCoralAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
-                    newAverage.middleAutoCount += 1;
-                    newAverage.middleNetAuto += (match.autoBarge);
-                }else if (match.autoPosition == "Side")
-                {
-                    newAverage.sideCoralAuto += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
-                    newAverage.sideAutoCount += 1;
-                }
-                newAverage.averageAutoCoral += (match.autoCoralL4 + match.autoCoralL3 + match.autoCoralL2 + match.autoCoralL1);
 
-                
+                newAverage.averageAutoFuelScored += match.autoFuelScored;
+                newAverage.averageAutoFuelFed += match.autoFuelFed;
+                newAverage.averageTeleFuelScored += match.teleFuelScored;
+                newAverage.averageTeleFuelFed += match.teleFuelFed;
+                newAverage.averageShotAccuracy = match.shotAccuracy;
+                newAverage.averageShotRate = match.shotRate;
 
-                if (match.defence == 0)
-                {
-                    newAverage.averageProcessorAll += (match.autoProcessor + match.processor);
-                    newAverage.averageBargeAll += (match.barge + match.autoBarge);
-                    newAverage.averageTeleCoral += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1);
-                    newAverage.averageReefRemoval += (match.autoReefAlgae + match.reefAlgae);
-                    newAverage.offensiveCount += 1;
-                    newAverage.totalTeleScore += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1 + match.processor + match.barge);
-                    newAverage.totalTeleAdjusted += (match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1 + (match.processor * 1.75m) + (match.barge * 1.75m));
+                newAverage.averageTeleTotalPoints += match.teleFuelScored;
+                newAverage.averageTotalPoints += match.teleFuelScored;
 
-                    if (match.defended == 0)
-                    {
-                        newAverage.unDefendedScored += match.autoProcessor + match.processor + match.barge + match.autoBarge + match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1;
-                        newAverage.unDefendedCount += 1;
-                    }
-                    else
-                    {
-                        newAverage.defendedScored += match.autoProcessor + match.processor + match.barge + match.autoBarge + match.coralL4 + match.coralL3 + match.coralL2 + match.coralL1;
-                        newAverage.defendedCount += 1;
-                    }
+                if (match.endClimb == "top") 
+                { 
+                    newAverage.averageTeleTotalPoints += 30;
+                    newAverage.successfulEndClimbTop++;
+                    newAverage.totalEndClimbTop++;
+                    newAverage.averageEndClimbPoints += 30;
+                    newAverage.averageTotalPoints += 30;
+                }
+                if (match.endClimb == "middle")
+                {
+                    newAverage.averageTeleTotalPoints += 20;
+                    newAverage.successfulEndClimbMiddle++;
+                    newAverage.totalEndClimbMiddle++;
+                    newAverage.averageEndClimbPoints += 20;
+                    newAverage.averageTotalPoints += 20;
+                }
+                if (match.endClimb == "bottom")
+                {
+                    newAverage.averageTeleTotalPoints += 10;
+                    newAverage.successfulEndClimbBottom++;
+                    newAverage.totalEndClimbBottom++;
+                    newAverage.averageEndClimbPoints += 10;
+                    newAverage.averageTotalPoints += 10;
+                }
+                if (match.endClimb == "fail")
+                {
+                    newAverage.totalEndClimbTop++;
+                    newAverage.totalEndClimbMiddle++;
+                    newAverage.totalEndClimbBottom++;
                 }
 
-                newAverage.percentMoblilitize += match.mobilitize;
-                if (match.endClimb == "Deep")
+                newAverage.averageAutoTotalPoints += match.autoFuelScored;
+                newAverage.averageTotalPoints += match.autoFuelScored;
+
+                if (match.autoClimb == "succeed")
                 {
-                    newAverage.successfulDeepClimb += 1;
-                    newAverage.totalDeepClimb += 1;
-                }
-                if (match.endClimb == "Shallow")
-                {
-                    newAverage.successfulShallowClimb += 1;
-                    newAverage.totalShallowClimb += 1;
-                }
-                if (match.endClimb == "Fail")
-                {
-                    //This is the Speghetti w/ paint over the hole
-                    newAverage.totalDeepClimb += 1;
-                    newAverage.totalShallowClimb += 1;
-                }
-                newAverage.totalPoints += ((match.autoProcessor + match.processor) * 2) + ((match.barge + match.autoBarge) * 4) + (match.autoCoralL4 * 7) + (match.autoCoralL3 * 6) + (match.autoCoralL2 * 4) + (match.autoCoralL1 * 3) + (match.coralL4 * 5) + (match.coralL3 * 4) + (match.coralL2 * 3) + (match.coralL1 * 2) + (match.mobilitize * 3);
-                if (match.endClimb == "Deep")
-                {
-                    newAverage.totalPoints += 12;
-                }
-                if (match.endClimb == "Shallow")
-                {
-                    newAverage.totalPoints += 6;
+                    newAverage.averageAutoTotalPoints += 15;
+                    newAverage.successfulAutoClimb++;
+                    newAverage.totalAutoClimb++;
+                    newAverage.averageTotalPoints += 15;
                 }
             }
         }
 
 
-        private static void CalculateAverages(TeamAverages_2025 newAverage)
+        private static void CalculateAverages(TeamAverages_2026 newAverage)
         {
             if (newAverage.numMatches < 1)
             {
                 return;
             }
-            //More Speget
-            decimal tempD = newAverage.successfulDeepClimb ?? 0;
-            decimal tempS = newAverage.successfulShallowClimb ?? 0;
-            //End of Speget
-            if (newAverage.sideAutoCount != 0)
-            {
-                newAverage.sideCoralAuto = newAverage.sideCoralAuto / newAverage.sideAutoCount;
-            }
-            if (newAverage.middleAutoCount != 0)
-            {
-                newAverage.middleCoralAuto = newAverage.middleCoralAuto / newAverage.middleAutoCount;
-                newAverage.middleNetAuto = newAverage.middleNetAuto / newAverage.middleAutoCount;
-            }
+            //Here we store the number of times the team has successfully done that particular climb
+            decimal tempA = newAverage.successfulAutoClimb ?? 0;
 
+            decimal tempT = newAverage.successfulEndClimbTop ?? 0;
+            decimal tempM = newAverage.successfulEndClimbMiddle ?? 0;
+            decimal tempB = newAverage.successfulEndClimbBottom ?? 0;
             
-            newAverage.averageAutoCoral = newAverage.averageAutoCoral / newAverage.numMatches;
+            newAverage.averageAutoFuelScored = newAverage.averageAutoFuelScored / newAverage.numMatches;
+            newAverage.averageAutoFuelFed = newAverage.averageAutoFuelFed / newAverage.numMatches;
 
-            if (newAverage.offensiveCount != 0)
+            newAverage.averageTeleFuelScored = newAverage.averageTeleFuelScored / newAverage.numMatches;
+            newAverage.averageTeleFuelFed = newAverage.averageTeleFuelFed / newAverage.numMatches;
+
+            newAverage.averageEndClimbPoints = newAverage.averageEndClimbPoints / newAverage.numMatches;
+
+            newAverage.averageShotAccuracy = newAverage.averageShotAccuracy / newAverage.numMatches;
+            newAverage.averageShotRate = newAverage.averageShotRate / newAverage.numMatches;
+
+            //Here the successful___climb has been repurposed to store the percentage of the time that the team was successful in doing that climb
+            //And total___climb is storing the number of times that type of climb has been attempted, which is not a metric we display but we need for calculations
+            if (newAverage.totalAutoClimb != 0)
             {
-                newAverage.averageTeleCoral = newAverage.averageTeleCoral / newAverage.offensiveCount;
-                newAverage.averageProcessorAll = newAverage.averageProcessorAll / newAverage.offensiveCount;
-                newAverage.averageBargeAll = newAverage.averageBargeAll / newAverage.offensiveCount;
-                newAverage.averageReefRemoval = newAverage.averageReefRemoval / newAverage.offensiveCount;
+                newAverage.successfulAutoClimb = (newAverage.successfulAutoClimb / newAverage.totalAutoClimb) * 100;
             }
 
-            if(newAverage.totalTeleScore != 0)
+            if (newAverage.totalEndClimbTop != 0)
             {
-                newAverage.totalTeleScore = newAverage.totalTeleScore / newAverage.offensiveCount;
-                newAverage.totalTeleAdjusted = newAverage.totalTeleAdjusted / newAverage.offensiveCount;
+                newAverage.successfulEndClimbTop = (newAverage.successfulEndClimbTop / newAverage.totalEndClimbTop) * 100;
+            }
+            if (newAverage.totalEndClimbMiddle != 0)
+            {
+                newAverage.successfulEndClimbMiddle = (newAverage.successfulEndClimbMiddle / newAverage.totalEndClimbMiddle) * 100;
+            }
+            if (newAverage.totalEndClimbBottom != 0)
+            {
+                newAverage.successfulEndClimbBottom = (newAverage.successfulEndClimbBottom / newAverage.totalEndClimbBottom) * 100;
             }
 
-            if (newAverage.defendedCount != 0)
-            {
-                newAverage.defendedScored = newAverage.defendedScored / newAverage.defendedCount;
-            }
-            if (newAverage.unDefendedCount != 0)
-            {
-                newAverage.unDefendedScored = newAverage.unDefendedScored / newAverage.unDefendedCount;
-            }
-            
+            //Then we set total___climb equal to that actual final metric we DO display, the number of times the team has successfully done that particular climb
+            newAverage.totalAutoClimb = Decimal.ToInt32(tempA);
+            newAverage.totalEndClimbTop = Decimal.ToInt32(tempT);
+            newAverage.totalEndClimbMiddle = Decimal.ToInt32(tempM);
+            newAverage.totalEndClimbBottom = Decimal.ToInt32(tempB);
 
-            if (newAverage.totalDeepClimb != 0)
-            {
-                newAverage.successfulDeepClimb = ((newAverage.successfulDeepClimb / newAverage.totalDeepClimb)) * 100;
-            }
-            if (newAverage.successfulShallowClimb != 0)
-            {
-                newAverage.successfulShallowClimb = ((newAverage.successfulShallowClimb / newAverage.totalShallowClimb)) * 100;
-            }
-            //Even More Spaget
-             newAverage.totalDeepClimb = Decimal.ToInt32(tempD);
-             newAverage.totalShallowClimb = Decimal.ToInt32(tempS);
-            //End of Speget
-            newAverage.percentMoblilitize = (newAverage.percentMoblilitize / newAverage.numMatches * 100);
-            newAverage.totalPoints = newAverage.totalPoints / newAverage.numMatches;
+            newAverage.averageAutoTotalPoints = newAverage.averageAutoTotalPoints / newAverage.numMatches;
+            newAverage.averageTeleTotalPoints = newAverage.averageTeleTotalPoints / newAverage.numMatches;
+            newAverage.averageTotalPoints = newAverage.averageTotalPoints / newAverage.numMatches;
         }
     }
 }

@@ -15,6 +15,6 @@ namespace RRScout.Entities
         public int order { get; set; }
         [Required]
         public string email { get; set; }
-        public int isDNPed { get; set; }
+        public int doNotPick { get; set; }
     }
 }

@@ -26,13 +26,13 @@ namespace RRScout
         public DbSet<PicklistOrder> PicklistOrder { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<MatchSchedule> MatchSchedule { get; set; }
-
         public DbSet<RobotPhoto> RobotPhotos { get; set; }
-
+        public DbSet<TeamNames> TeamNames { get; set; }
         public DbSet<TeamAverages_2025> TeamAverages_2025 { get; set; }
         public DbSet<MatchData_2025> MatchData_2025 { get; set; }
-
         public DbSet<SuperScoutData_2025> SuperScoutData_2025 { get; set; }
-        public DbSet<TeamNames> TeamNames { get; set; }
+        public DbSet<TeamAverages_2026> TeamAverages_2026 { get; set; }
+        public DbSet<MatchData_2026> MatchData_2026 { get; set; }
+        public DbSet<SuperScoutData_2026> SuperScoutData_2026 { get; set; }
     }
 }

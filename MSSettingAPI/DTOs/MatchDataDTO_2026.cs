@@ -10,50 +10,28 @@ namespace RRScout.DTOs
         public string? eventCode { get; set; }
         public int teamNumber { get; set; }
         public int matchNumber { get; set; }
-        [Range(0, 30, ErrorMessage = " Coral not within range")]
-        public int coralL1 { get; set; }
-        [Range(0, 12, ErrorMessage = " Coral not within range")]
-        public int coralL2 { get; set; }
-        [Range(0, 12, ErrorMessage = " Coral not within range")]
-        public int coralL3 { get; set; }
-        [Range(0, 12, ErrorMessage = " Coral not within range")]
-        public int coralL4 { get; set; }
-        [Range(0, 30, ErrorMessage = "Auto Coral not within range")]
-        public int autoCoralL1 { get; set; }
-        [Range(0, 12, ErrorMessage = "Auto Coral not within range")]
-        public int autoCoralL2 { get; set; }
-        [Range(0, 12, ErrorMessage = "Auto Coral not within range")]
-        public int autoCoralL3 { get; set; }
-        [Range(0, 12, ErrorMessage = "Auto Coral not within range")]
-        public int autoCoralL4 { set; get; }
-        [Range(0, 35, ErrorMessage = "Processor not within range")]
-        public int processor { set; get; }
-        [Range(0, 35, ErrorMessage = "Auto Processor not within range")]
-        public int autoProcessor { set; get; }
+        public int teleFuelScored { get; set; }
+        public int autoFuelScored { get; set; }
+        public int teleFuelFed { get; set; }
+        public int autoFuelFed { get; set; }
         public string? endClimb { set; get; }
-        public int groundAlgae { set; get; }
-        public int reefAlgae { set; get; }
-        public int autoGroundAlgae { set; get; }
-        public int autoReefAlgae { set; get; }
-        [Range(0, 18, ErrorMessage = "Barge L1 not within range")]
-        public int barge { set; get; }
-        [Range(0, 18, ErrorMessage = "Auto Barge L1 not within range")]
-        public int autoBarge { get; set; }
-        [Range(0, 1, ErrorMessage = "Defence L1 not within range")]
-        public int defence { get; set; }
-        [Range(0, 1, ErrorMessage = "Defended L1 not within range")]
-        public int defended { get; set; }
-        [Range(0, 1, ErrorMessage = "Mobilitize L1 not within range")]
-        public int mobilitize { get; set; }
-        [Range(0, 5, ErrorMessage = "Gamble Amount L1 not within range")]
+        public bool? fuelSourceMidfield { set; get; }
+        public bool? fuelSourceDepot { set; get; }
+        public bool? fuelSourceHP { set; get; }
+        public bool? fuelSourcePreLoadOnly { set; get; }
+        public string? autoClimb { set; get; }
+        public int shotAccuracy { set; get; }
+        [Range(0, 5, ErrorMessage = "Fuel Shot Accuracy not within range")]
+        public int shotRate { set; get; }
+        [Range(0, 5, ErrorMessage = "Fuel Shot Rate not within range")]
+        public string? defense { get; set; }
         public int gambleAmount { get; set; }
+        [Range(0, 5, ErrorMessage = "Gamble Amount not within range")]
         public string? notes { set; get; }
         public string? gambleColor { set; get; }
         public string? scoutName { get; set; }
-        public int ignore { get; set; }
-        public int doNotPick { get; set; }
-        public int? edited { get; set; }
-        public string? autoPosition { get; set; }
-        public int? validatedClimb { get; set; }
+        public bool ignore { get; set; }
+        public bool? edited { get; set; }
+        public int endClimbPoints { get; set; }
     }
 }

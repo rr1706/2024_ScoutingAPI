@@ -27,22 +27,22 @@ namespace RRScout.Controllers
 
         [HttpPost("savedata")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> SaveData(List<MatchDataDTO_2025> matchDTO)
+        public async Task<ActionResult> SaveData(List<MatchDataDTO_2026> matchDTO)
         {
             try
             {
                 var newMatchDTO = matchDTO.GroupBy(x => x.matchNumber & x.teamNumber).Select(x => x.First()).ToList();
 
-                var newMatches = mapper.Map<List<MatchData_2025>>(newMatchDTO);
+                var newMatches = mapper.Map<List<MatchData_2026>>(newMatchDTO);
 
-                var exisitingMatches = await Context.MatchData_2025.Where(x => x.eventCode == newMatches[0].eventCode).ToListAsync();
+                var exisitingMatches = await Context.MatchData_2026.Where(x => x.eventCode == newMatches[0].eventCode).ToListAsync();
 
-                foreach (MatchData_2025 match in newMatches)
+                foreach (MatchData_2026 match in newMatches)
                 {
                     var result = exisitingMatches.Where(x => x.eventCode == match.eventCode && x.matchNumber == match.matchNumber && x.teamNumber == match.teamNumber).ToList();
                     if (result.Count == 0)
                     {
-                        await Context.MatchData_2025
+                        await Context.MatchData_2026
                             .AddAsync(match);
                     }
                 }
@@ -58,24 +58,24 @@ namespace RRScout.Controllers
 
         [HttpGet("event")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<MatchData_2025>>> Getfg(string eventID)
+        public async Task<ActionResult<List<MatchData_2026>>> Getfg(string eventID)
         {
-            var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID).ToListAsync();
+            var matchData = await Context.MatchData_2026.Where(x => x.eventCode == eventID).ToListAsync();
             return Ok(matchData);
         }
         [HttpGet("getbyteam")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<MatchDataDTO_2025>>> GetTeamMatchData(string eventID, int teamNumber)
+        public async Task<ActionResult<List<MatchDataDTO_2026>>> GetTeamMatchData(string eventID, int teamNumber)
         {
-            var matchData = await Context.MatchData_2025.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
-            return Ok(mapper.Map<List<MatchDataDTO_2025>>(matchData));
+            var matchData = await Context.MatchData_2026.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
+            return Ok(mapper.Map<List<MatchDataDTO_2026>>(matchData));
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("sendignore/{matchID}/{ignore}")]
-        public async Task<ActionResult<List<MatchDataDTO_2025>>> SendIgnore(int matchID, int ignore)
+        public async Task<ActionResult<List<MatchDataDTO_2026>>> SendIgnore(int matchID, bool ignore)
         {
-            var match = await Context.MatchData_2025.Where(x => x.id == matchID).FirstOrDefaultAsync();
+            var match = await Context.MatchData_2026.Where(x => x.id == matchID).FirstOrDefaultAsync();
             if (match != null)
             {
                 match.ignore = ignore;
@@ -87,35 +87,38 @@ namespace RRScout.Controllers
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost("updatematchbymatch")]
-    public async Task<ActionResult<List<MatchDataDTO_2025>>> updateMatchByMatch(MatchDataDTO_2025 matchData)
+    public async Task<ActionResult<List<MatchDataDTO_2026>>> updateMatchByMatch(MatchDataDTO_2026 matchData)
     {
-        var match = await Context.MatchData_2025.Where(x => x.id == matchData.id).FirstOrDefaultAsync();
+        var match = await Context.MatchData_2026.Where(x => x.id == matchData.id).FirstOrDefaultAsync();
         if (match != null)
         {
-                match.coralL1 = matchData.coralL1;
-                match.coralL2 = matchData.coralL2;
-                match.coralL3 = matchData.coralL3;
-                match.coralL4 = matchData.coralL4;
-                match.autoCoralL1 = matchData.autoCoralL1;
-                match.autoCoralL2 = matchData.autoCoralL2;
-                match.autoCoralL3 = matchData.autoCoralL3;
-                match.autoCoralL4 = matchData.autoCoralL4;
-                match.processor = matchData.processor;
-                match.autoProcessor = matchData.autoProcessor;
+                match.autoClimb = matchData.autoClimb;
                 match.endClimb = matchData.endClimb;
-                match.groundAlgae = matchData.groundAlgae;
-                match.autoGroundAlgae = matchData.autoGroundAlgae;
-                match.reefAlgae = matchData.reefAlgae;
-                match.autoReefAlgae = matchData.autoReefAlgae;
-                match.barge = matchData.barge;
-                match.autoBarge = matchData.autoBarge;
-                match.defence = matchData.defence;
-                match.defended = matchData.defended;
-                match.mobilitize = matchData.mobilitize;
-                match.doNotPick = matchData.doNotPick;
-                match.edited = 1;
-                match.validatedClimb = matchData.validatedClimb;
-
+                match.autoFuelScored = matchData.autoFuelScored;
+                match.teleFuelScored = matchData.teleFuelScored;
+                match.autoFuelFed = matchData.autoFuelFed;
+                match.fuelSourceMidfield = matchData.fuelSourceMidfield;
+                match.fuelSourceDepot = matchData.fuelSourceDepot;
+                match.fuelSourceHP = matchData.fuelSourceHP;
+                match.fuelSourcePreLoadOnly = matchData.fuelSourcePreLoadOnly;
+                match.shotAccuracy = matchData.shotAccuracy;
+                match.shotRate = matchData.shotRate;
+                match.defense = matchData.defense;
+                match.ignore = matchData.ignore;
+                match.edited = true; 
+                if (matchData.endClimb == "top")
+                {
+                    match.endClimbPoints = 30;
+                }
+                else if (matchData.endClimb == "middle")
+                {
+                    match.endClimbPoints = 20;
+                }
+                else if (matchData.endClimb == "bottom")
+                {
+                    match.endClimbPoints = 10;
+                }
+                else { match.endClimbPoints = 0; }
                 Context.SaveChanges();
         }
         return Ok();

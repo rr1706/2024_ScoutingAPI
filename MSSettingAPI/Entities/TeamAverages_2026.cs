@@ -9,30 +9,27 @@ namespace RRScout.Entities
         public int id { get; set; }
         public string? eventCode { get; set; }
         public int teamNumber { get; set; }
-        public decimal? averageAutoCoral { get; set; } = 0;
-        public decimal? averageTeleCoral { get; set; } = 0;
-        public decimal? averageReefRemoval { get; set; } = 0;
-        public decimal? averageBargeAll { get; set; } = 0;
-        public decimal? averageProcessorAll { get; set; } = 0;
-        public decimal? successfulDeepClimb { get; set; } = 0;
-        public int? totalDeepClimb { get; set; } = 0;
-        public decimal? successfulShallowClimb { get; set; } = 0;
-        public int? totalShallowClimb { get; set; } = 0;
-        public decimal? percentMoblilitize { get; set; } = 0;
-        public decimal? totalPoints { get; set; } = 0;
+        public int? totalAutoClimb { get; set; } = 0;
+        public decimal? successfulAutoClimb { get; set; } = 0;
+        public decimal? averageAutoFuelScored { get; set; } = 0;
+        public decimal? averageAutoFuelFed { get; set; } = 0;
+        public decimal? averageTeleFuelScored { get; set; } = 0;
+        public decimal? averageTeleFuelFed { get; set; } = 0;
+        public decimal? autoCOPR { get; set; } = 0;
+        public decimal? teleCOPR { get; set; } = 0;
+        public int? totalEndClimbTop { get; set; } = 0;
+        public decimal? successfulEndClimbTop { get; set; } = 0;
+        public int? totalEndClimbMiddle { get; set; } = 0;
+        public decimal? successfulEndClimbMiddle { get; set; } = 0;
+        public int? totalEndClimbBottom { get; set; } = 0;
+        public decimal? successfulEndClimbBottom { get; set; } = 0;
+        public decimal? averageEndClimbPoints { get; set; } = 0;
+        public decimal? averageShotAccuracy { set; get; }
+        public decimal? averageShotRate { set; get; }
         public int? numMatches { get; set; } = 0;
-        public int? doNotPick { get; set; } = 0;
-        public decimal? sideCoralAuto { get; set; } = 0;
-        public decimal? middleCoralAuto { get; set; } = 0;
-        public decimal? middleNetAuto { get; set; } = 0;
-        public int? sideAutoCount { get; set; } = 0;
-        public int? middleAutoCount { get; set; } = 0;
-        public int? offensiveCount { get; set; } = 0;
-        public decimal? defendedScored { get; set; } = 0;
-        public decimal? unDefendedScored { get; set; } = 0;
-        public int? defendedCount { get; set; } = 0;
-        public int? unDefendedCount { get; set; } = 0;
-        public decimal? totalTeleScore { get; set; } = 0;
-        public decimal? totalTeleAdjusted { get; set; } = 0;
+        public bool? doNotPick { get; set; } = false;
+        public decimal? averageTotalPoints { get; set; } = 0;
+        public decimal? averageAutoTotalPoints { get; set; } = 0;
+        public decimal? averageTeleTotalPoints { get; set; } = 0;
     }
 }

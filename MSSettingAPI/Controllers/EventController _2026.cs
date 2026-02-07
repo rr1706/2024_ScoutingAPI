@@ -30,7 +30,7 @@ namespace RRScout.Controllers
         {
             try
             {
-                var events = await Context.Events.Where(x => x.year == 2025).ToListAsync();
+                var events = await Context.Events.Where(x => x.year == 2026).ToListAsync();
                 return Ok(mapper.Map<List<EventDTO>>(events).OrderBy(x => x.eventName));
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace RRScout.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<int>>> GetTeamList(string eventID)
         {
-            var teamList = await Context.MatchData_2025.Where(x => x.eventCode == eventID).Select(x => x.teamNumber).Distinct().ToListAsync();
+            var teamList = await Context.MatchData_2026.Where(x => x.eventCode == eventID).Select(x => x.teamNumber).Distinct().ToListAsync();
             return Ok(teamList.OrderBy(x => x));
         }
 

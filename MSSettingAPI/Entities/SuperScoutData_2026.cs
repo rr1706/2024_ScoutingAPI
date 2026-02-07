@@ -11,11 +11,7 @@ public class SuperScoutData_2026
     public string scoutName { get; set; }
     public string comments { get; set; }
     public string type { get; set; }
-    public string drivetrain { get; set; }
-    public int batteryCount { get; set; }
-    public string batteryAge { get; set; } 
-
-    public string driverExperience { get; set; }
-
+    public int? shotRate { get; set; }
+    public int? shotAccuracy { get; set; }
 }
 

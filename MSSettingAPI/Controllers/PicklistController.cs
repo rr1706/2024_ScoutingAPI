@@ -57,7 +57,7 @@ namespace RRScout.Controllers
                     var entity = await Context.PicklistOrder.FirstOrDefaultAsync(x => x.teamNumber == team.teamNumber && x.eventCode == team.eventCode && x.email == email);
                     if (entity != null) { 
                         entity.order = team.order;
-                        entity.isDNPed = team.isDNPed;
+                        entity.doNotPick = team.doNotPick;
                         await Context.SaveChangesAsync();
                     }
                     else
@@ -67,7 +67,7 @@ namespace RRScout.Controllers
                         newTeam.eventCode = team.eventCode;
                         newTeam.order = team.order;
                         newTeam.email = email;
-                        newTeam.isDNPed = team.isDNPed;
+                        newTeam.doNotPick = team.doNotPick;
                         await Context.PicklistOrder.AddAsync(newTeam);
                         await Context.SaveChangesAsync();
                     }
