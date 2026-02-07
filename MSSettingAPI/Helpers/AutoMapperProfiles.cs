@@ -21,6 +21,9 @@ namespace RRScout.Helpers
             CreateMap<Event, EventDTO>().ReverseMap();
             CreateMap<MatchSchedule, MatchScheduleDTO>().ReverseMap();
             CreateMap<SuperScoutData_2025, SuperScoutDataDTO_2025>().ReverseMap();
+            CreateMap<MatchData_2026, MatchDataDTO_2026>().ReverseMap();
+            CreateMap<SuperScoutData_2026, SuperScoutDataDTO_2026>().ReverseMap();
+
 
             CreateMap<TeamNames, TeamInfo>()
                 .ForMember(dest => dest.eventCode, opt => opt.MapFrom(src => src.eventCode))

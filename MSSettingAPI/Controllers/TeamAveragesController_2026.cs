@@ -25,7 +25,7 @@ namespace RRScout.Controllers
         }
 
         [HttpGet("calculateAverages")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+//        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Calculate(string eventID)
         {
             try
@@ -78,7 +78,7 @@ namespace RRScout.Controllers
         }
 
         [HttpGet("getteamaverages")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<TeamAverages_2026>>> GetTeamAverages(string eventID)
         {
             try
@@ -95,7 +95,7 @@ namespace RRScout.Controllers
 
         private static void AddMatch(TeamAverages_2026 newAverage, MatchData_2026 match)
         {
-            if (match.ignore!)
+            if (!match.ignore)
             {
                 newAverage.numMatches += 1;
 
@@ -103,8 +103,8 @@ namespace RRScout.Controllers
                 newAverage.averageAutoFuelFed += match.autoFuelFed;
                 newAverage.averageTeleFuelScored += match.teleFuelScored;
                 newAverage.averageTeleFuelFed += match.teleFuelFed;
-                newAverage.averageShotAccuracy = match.shotAccuracy;
-                newAverage.averageShotRate = match.shotRate;
+                newAverage.averageShotAccuracy += match.shotAccuracy;
+                newAverage.averageShotRate += match.shotRate;
 
                 newAverage.averageTeleTotalPoints += match.teleFuelScored;
                 newAverage.averageTotalPoints += match.teleFuelScored;
@@ -149,6 +149,10 @@ namespace RRScout.Controllers
                     newAverage.successfulAutoClimb++;
                     newAverage.totalAutoClimb++;
                     newAverage.averageTotalPoints += 15;
+                }
+                if (match.autoClimb == "fail")
+                {
+                    newAverage.totalAutoClimb++;
                 }
             }
         }

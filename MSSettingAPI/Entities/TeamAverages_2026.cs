@@ -24,8 +24,8 @@ namespace RRScout.Entities
         public int? totalEndClimbBottom { get; set; } = 0;
         public decimal? successfulEndClimbBottom { get; set; } = 0;
         public decimal? averageEndClimbPoints { get; set; } = 0;
-        public decimal? averageShotAccuracy { set; get; }
-        public decimal? averageShotRate { set; get; }
+        public decimal? averageShotAccuracy { set; get; } = 0;
+        public decimal? averageShotRate { set; get; } = 0;
         public int? numMatches { get; set; } = 0;
         public bool? doNotPick { get; set; } = false;
         public decimal? averageTotalPoints { get; set; } = 0;
