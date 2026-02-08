@@ -95,7 +95,8 @@ namespace RRScout.Controllers
 
         private static void AddMatch(TeamAverages_2026 newAverage, MatchData_2026 match)
         {
-            if (!match.ignore)
+            // Run when match.ignore is null or false.
+            if (match.ignore == null || match.ignore == false)
             {
                 newAverage.numMatches += 1;
 
@@ -109,8 +110,8 @@ namespace RRScout.Controllers
                 newAverage.averageTeleTotalPoints += match.teleFuelScored;
                 newAverage.averageTotalPoints += match.teleFuelScored;
 
-                if (match.endClimb == "top") 
-                { 
+                if (match.endClimb == "top")
+                {
                     newAverage.averageTeleTotalPoints += 30;
                     newAverage.successfulEndClimbTop++;
                     newAverage.totalEndClimbTop++;

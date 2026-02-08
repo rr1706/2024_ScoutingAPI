@@ -15,10 +15,10 @@ namespace RRScout.DTOs
         public int teleFuelFed { get; set; }
         public int autoFuelFed { get; set; }
         public string? endClimb { set; get; }
-        public bool? fuelSourceMidfield { set; get; }
-        public bool? fuelSourceDepot { set; get; }
-        public bool? fuelSourceHP { set; get; }
-        public bool? fuelSourcePreLoadOnly { set; get; }
+        public bool fuelSourceMidfield { set; get; }
+        public bool fuelSourceDepot { set; get; }
+        public bool fuelSourceHP { set; get; }
+        public bool fuelSourcePreLoadOnly { set; get; }
         public string? autoClimb { set; get; }
         public int shotAccuracy { set; get; }
         [Range(0, 5, ErrorMessage = "Fuel Shot Accuracy not within range")]
@@ -30,7 +30,7 @@ namespace RRScout.DTOs
         public string? notes { set; get; }
         public string? gambleColor { set; get; }
         public string? scoutName { get; set; }
-        public bool ignore { get; set; }
+        public bool? ignore { get; set; } = false;
         public bool? edited { get; set; }
         public int endClimbPoints { get; set; }
     }

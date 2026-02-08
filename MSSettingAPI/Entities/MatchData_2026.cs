@@ -31,7 +31,7 @@ namespace RRScout.Entities
         public string? notes { set; get; }
         public string? gambleColor { set; get; }
         public string? scoutName { get; set; }
-        public bool ignore { get; set; }
+        public bool? ignore { get; set; }
         public bool? edited { get; set; }
         public int endClimbPoints { get; set; }
     }
