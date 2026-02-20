@@ -15,8 +15,8 @@ namespace RRScout.Entities
         public decimal? averageAutoFuelFed { get; set; } = 0;
         public decimal? averageTeleFuelScored { get; set; } = 0;
         public decimal? averageTeleFuelFed { get; set; } = 0;
-        public decimal? autoCOPR { get; set; } = 0;
-        public decimal? teleCOPR { get; set; } = 0;
+        public decimal? autoCOPR { get; set; } = null;
+        public decimal? teleCOPR { get; set; } = null;
         public int? totalEndClimbTop { get; set; } = 0;
         public decimal? successfulEndClimbTop { get; set; } = 0;
         public int? totalEndClimbMiddle { get; set; } = 0;

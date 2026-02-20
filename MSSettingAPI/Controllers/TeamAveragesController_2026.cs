@@ -233,6 +233,10 @@ namespace RRScout.Controllers
             newAverage.averageAutoTotalPoints = newAverage.averageAutoTotalPoints / newAverage.numMatches;
             newAverage.averageTeleTotalPoints = newAverage.averageTeleTotalPoints / newAverage.numMatches;
             newAverage.averageTotalPoints = newAverage.averageTotalPoints / newAverage.numMatches;
+
+
+            newAverage.autoCOPR = null;
+            newAverage.teleCOPR = null;
         }
     }
 }
