@@ -26,15 +26,15 @@ namespace RRScout.Controllers
 
         [HttpPost("savedata")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> SaveData(SuperScoutDataDTO_2025 superScoutData)
+        public async Task<ActionResult> SaveData(SuperScoutDataDTO_2026 superScoutData)
         {
             try
             {
-                var newSuperData = mapper.Map<SuperScoutData_2025>(superScoutData);
+                var newSuperData = mapper.Map<SuperScoutData_2026>(superScoutData);
 
-                //var exisitingMatches = await Context.SuperScoutData_2025.Where(x => x.eventCode == newSuperData.eventCode).ToListAsync();
+                var exisitingMatches = await Context.SuperScoutData_2026.Where(x => x.eventCode == newSuperData.eventCode).ToListAsync();
 
-                await Context.SuperScoutData_2025.AddAsync(newSuperData);
+                await Context.SuperScoutData_2026.AddAsync(newSuperData);
 
                 await Context.SaveChangesAsync();
 
@@ -48,17 +48,17 @@ namespace RRScout.Controllers
 
         [HttpGet("event")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<SuperScoutDataDTO_2025>>> Get(string eventID)
+        public async Task<ActionResult<List<SuperScoutDataDTO_2026>>> Get(string eventID)
         {
-            var matchData = await Context.SuperScoutData_2025.Where(x => x.eventCode == eventID).ToListAsync();
-            return Ok(mapper.Map<List<SuperScoutDataDTO_2025>>(matchData));
+            var matchData = await Context.SuperScoutData_2026.Where(x => x.eventCode == eventID).ToListAsync();
+            return Ok(mapper.Map<List<SuperScoutDataDTO_2026>>(matchData));
         }
         [HttpGet("getbyteam")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<SuperScoutDataDTO_2025>>> GetTeamMatchData(string eventID, int teamNumber)
+        public async Task<ActionResult<List<SuperScoutDataDTO_2026>>> GetTeamMatchData(string eventID, int teamNumber)
         {
-            var matchData = await Context.SuperScoutData_2025.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
-            return Ok(mapper.Map<List<SuperScoutDataDTO_2025>>(matchData));
+            var matchData = await Context.SuperScoutData_2026.Where(x => x.eventCode == eventID && x.teamNumber == teamNumber).ToListAsync();
+            return Ok(mapper.Map<List<SuperScoutDataDTO_2026>>(matchData));
         }
     }
 

@@ -21,13 +21,13 @@ namespace RRScout.Entities
         public bool? fuelSourceHP { set; get; }
         public bool? fuelSourcePreLoadOnly { set; get; }
         public string? autoClimb { set; get; }
-        public int shotAccuracy { set; get; }
         [Range(0, 5, ErrorMessage = "Fuel Shot Accuracy not within range")]
-        public int shotRate { set; get; }
+        public int shotAccuracy { set; get; }
         [Range(0, 5, ErrorMessage = "Fuel Shot Rate not within range")]
+        public int shotRate { set; get; }
         public string? defense { get; set; }
-        public int gambleAmount { get; set; }
         [Range(0, 5, ErrorMessage = "Gamble Amount not within range")]
+        public int gambleAmount { get; set; }
         public string? notes { set; get; }
         public string? gambleColor { set; get; }
         public string? scoutName { get; set; }

@@ -31,13 +31,18 @@ namespace RRScout.Controllers
             try
             {
                 var matchData = await Context.MatchData_2026.Where(x => x.eventCode == eventID).OrderBy(x => x.teamNumber).ToListAsync();
-
+                //new SuperScout Stuff
+                var sScoutData = await Context.SuperScoutData_2026.Where(x => x.eventCode == eventID).ToListAsync();
+                
                 var newAverages = new List<TeamAverages_2026>();
                 int currentTeam = 0;
                 TeamAverages_2026 newAverage = new TeamAverages_2026();
 
                 foreach (var match in matchData)
                 {
+                    //new SuperScout Stuff
+                    var scout = sScoutData.FirstOrDefault(s => s.teamNumber == match.teamNumber && s.matchNumber == match.matchNumber);
+
                     if (match.teamNumber != currentTeam)
                     {
                         if (currentTeam != 0)
@@ -48,12 +53,12 @@ namespace RRScout.Controllers
                         }
                         newAverage.teamNumber = match.teamNumber;
                         newAverage.eventCode = match.eventCode;
-                        AddMatch(newAverage, match);
+                        AddMatch(newAverage, match, scout);
 
                     }
                     else
                     {
-                        AddMatch(newAverage, match);
+                        AddMatch(newAverage, match, scout);
                     }
                     currentTeam = match.teamNumber;
                 }
@@ -93,8 +98,9 @@ namespace RRScout.Controllers
         }
 
 
-        private static void AddMatch(TeamAverages_2026 newAverage, MatchData_2026 match)
+        private static void AddMatch(TeamAverages_2026 newAverage, MatchData_2026 match, SuperScoutData_2026 scout)
         {
+            decimal superScoutWeight = 2.0M;
             // Run when match.ignore is null or false.
             if (match.ignore == null || match.ignore == false)
             {
@@ -104,11 +110,20 @@ namespace RRScout.Controllers
                 newAverage.averageAutoFuelFed += match.autoFuelFed;
                 newAverage.averageTeleFuelScored += match.teleFuelScored;
                 newAverage.averageTeleFuelFed += match.teleFuelFed;
-                newAverage.averageShotAccuracy += match.shotAccuracy;
-                newAverage.averageShotRate += match.shotRate;
 
                 newAverage.averageTeleTotalPoints += match.teleFuelScored;
                 newAverage.averageTotalPoints += match.teleFuelScored;
+
+                // Add w/o weights
+                if (scout != null)
+                {
+                    newAverage.averageShotAccuracy += (scout.shotAccuracy * superScoutWeight);
+                    newAverage.averageShotRate += (scout.shotRate * superScoutWeight);
+                    newAverage.numScoutMatches += (int)(1 * superScoutWeight);
+                }
+
+                newAverage.averageShotAccuracy += match.shotAccuracy;
+                newAverage.averageShotRate += match.shotRate;
 
                 if (match.endClimb == "top")
                 {
@@ -165,6 +180,11 @@ namespace RRScout.Controllers
             {
                 return;
             }
+
+            decimal numMatches = newAverage.numMatches ?? 0;
+            decimal numScoutMatches = newAverage.numScoutMatches ?? 0;
+            decimal totalWeight = (numScoutMatches + numMatches);
+
             //Here we store the number of times the team has successfully done that particular climb
             decimal tempA = newAverage.successfulAutoClimb ?? 0;
 
@@ -180,8 +200,9 @@ namespace RRScout.Controllers
 
             newAverage.averageEndClimbPoints = newAverage.averageEndClimbPoints / newAverage.numMatches;
 
-            newAverage.averageShotAccuracy = newAverage.averageShotAccuracy / newAverage.numMatches;
-            newAverage.averageShotRate = newAverage.averageShotRate / newAverage.numMatches;
+            // Use weighted average for SA/SR
+            newAverage.averageShotAccuracy = newAverage.averageShotAccuracy / totalWeight;
+            newAverage.averageShotRate = newAverage.averageShotRate / totalWeight;
 
             //Here the successful___climb has been repurposed to store the percentage of the time that the team was successful in doing that climb
             //And total___climb is storing the number of times that type of climb has been attempted, which is not a metric we display but we need for calculations

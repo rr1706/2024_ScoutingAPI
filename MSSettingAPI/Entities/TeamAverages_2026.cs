@@ -31,5 +31,6 @@ namespace RRScout.Entities
         public decimal? averageTotalPoints { get; set; } = 0;
         public decimal? averageAutoTotalPoints { get; set; } = 0;
         public decimal? averageTeleTotalPoints { get; set; } = 0;
+        public int? numScoutMatches { get; set; } = 0;
     }
 }

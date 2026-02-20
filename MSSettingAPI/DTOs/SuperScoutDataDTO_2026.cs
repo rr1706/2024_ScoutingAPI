@@ -15,6 +15,5 @@ namespace RRScout.DTOs
         public string type { get; set; }
         public int? shotRate { get; set; }
         public int? shotAccuracy { get; set; }
-
     }
 }

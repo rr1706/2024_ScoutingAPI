@@ -31,7 +31,18 @@ namespace RRScout.Controllers
         {
             try
             {
-                var newMatchDTO = matchDTO.GroupBy(x => x.matchNumber & x.teamNumber).Select(x => x.First()).ToList();
+                var newMatchDTO = matchDTO.GroupBy(x => new { x.matchNumber, x.teamNumber }).Select(x => x.First()).ToList();
+                /* Doing weird things, was "...new { x.matchNumber & x.teamNumber })..."
+                When you do x.matchNumber & x.teamNumber (bitwise AND):
+
+                Match 67: 67 & 1706 = 2
+                Match 71: 71 & 1706 = 2 <- COLLISION!
+                Match 72: 72 & 1706 = 8
+                Match 73: 73 & 1706 = 8 <- COLLISION!
+
+                The GroupBy groups matches 67 and 71 together (both have key 2), then .Select(x => x.First()) keeps only match 67 and throws away match 71!
+                Same thing happens with matches 72 and 73 - they both hash to 8, so only match 72 survives.
+                */
 
                 var newMatches = mapper.Map<List<MatchData_2026>>(newMatchDTO);
 
@@ -118,7 +129,7 @@ namespace RRScout.Controllers
                 {
                     match.endClimbPoints = 10;
                 }
-                else { match.endClimbPoints = 0; }
+                else { match.endClimbPoints = 0; }               
                 Context.SaveChanges();
         }
         return Ok();
